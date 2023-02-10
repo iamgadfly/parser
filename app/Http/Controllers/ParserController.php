@@ -7,14 +7,18 @@ use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 // use GuzzleHttp\Psr7\Request;
 
 class ParserController extends Controller
 {
-    public function index(Request $request){
-        $file = $request->file('file')->get();
+    public static function index(){
+        // $file = $request->file('file')->get();
+        $file = Storage::disk('local')->get('all.csv');
+        // dd($file);
         foreach(explode(',', $file) as $value){
               if(stristr($value, 'https://www.backmarket.com/en-us/p/')){
                 $links[] = $value;
