@@ -17,8 +17,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->job(new ParserJob)->hourly();
-        $schedule->command('queue:listen --timeout=3600')->everyMinute();
+        $schedule->job(new ParserJob)->everyMinute();
+        // $schedule->command('queue:listen --timeout=3600')->everyMinute();
     }
 
     /**

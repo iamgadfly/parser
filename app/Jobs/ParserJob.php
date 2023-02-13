@@ -32,7 +32,7 @@ class ParserJob implements ShouldQueue
      */
     public function handle()
     {
-        Storage::disk('local')->get();
-        ParserController::index($file);
+        // Storage::disk('local')->get();
+        ParserController::index();
     }
 }

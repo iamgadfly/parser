@@ -1,0 +1,2223 @@
+
+
+
+
+  2023-02-12 09:39:18 Running ['artisan' queue:listen --timeout=3600]   2023-02-12 09:39:18 Running ['artisan' queue:listen --timeout=3600]   2023-02-12 09:39:18 Running ['artisan' queue:listen --timeout=3600]   2023-02-12 09:39:18 Running ['artisan' queue:listen --timeout=3600] 
+  2023-02-12 09:40:38 Running ['artisan' queue:listen --timeout=3600] 
+  2023-02-12 09:43:21 Running [App\Jobs\ParserJob] array:19 [ // app/Http/Controllers/ParserController.php:73
+  0 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  1 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  2 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  3 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  4 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  5 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  6 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  7 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  8 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  9 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  10 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  11 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  12 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  13 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  14 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  15 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  16 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  17 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  18 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-purple-unlocked/0d8118da-8447-488e-b79d-6369a1636a83"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Purple"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "292.26"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "331.06"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+]
+
+  2023-02-12 09:43:39 Running [App\Jobs\ParserJob] array:19 [ // app/Http/Controllers/ParserController.php:73
+  0 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  1 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  2 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  3 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  4 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  5 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  6 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  7 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  8 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  9 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  10 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  11 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  12 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  13 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  14 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  15 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  16 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  17 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  18 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-purple-unlocked/0d8118da-8447-488e-b79d-6369a1636a83"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Purple"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "292.26"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "331.06"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+]
+
+  2023-02-12 09:43:54 Running [App\Jobs\ParserJob] array:19 [ // app/Http/Controllers/ParserController.php:73
+  0 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  1 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  2 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  3 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  4 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  5 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  6 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  7 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  8 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  9 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  10 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  11 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  12 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  13 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  14 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  15 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  16 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  17 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  18 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-purple-unlocked/0d8118da-8447-488e-b79d-6369a1636a83"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Purple"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "292.26"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "331.06"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+]
+
+  2023-02-12 09:44:12 Running [App\Jobs\ParserJob] array:19 [ // app/Http/Controllers/ParserController.php:73
+  0 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  1 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  2 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-productred-unlocked/b5303639-e51f-47e0-b766-a42fc9e794e8"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "275.00"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "281.70"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "296.20"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  3 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  4 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  5 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-productred-unlocked/8520a6cf-f4bd-4ed6-91ce-a5c3164755f7"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "(PRODUCT)Red"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "297.68"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "321.32"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "357.70"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  6 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  7 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  8 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-black-unlocked/706a4f4d-3368-49fb-966c-5642e14bfc5c"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "276.84"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "296.53"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "304.78"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  9 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  10 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  11 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-black-unlocked/547a9196-b6e5-4f02-9019-e80c43115a62"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Black"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "281.86"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "341.66"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "381.27"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  12 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  13 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  14 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-green-unlocked/65fb612e-d4cd-4f3a-bb7b-37d96cc8715b"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "293.02"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "323.12"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  15 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  16 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  17 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-128-gb-green-unlocked/1fda3c2d-8c12-4266-aee2-0f533f4a59d8"
+    "model_about" => array:3 [
+      0 => "128 GB"
+      1 => "Green"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "302.47"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "330.31"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "392.53"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+  18 => array:4 [
+    "model" => "iPhone 11"
+    "link" => "https://www.backmarket.com/en-us/p/iphone-11-64-gb-purple-unlocked/0d8118da-8447-488e-b79d-6369a1636a83"
+    "model_about" => array:3 [
+      0 => "64 GB"
+      1 => "Purple"
+      2 => "Unlocked"
+    ]
+    "states" => array:3 [
+      0 => array:4 [
+        "price" => "274.99"
+        "state" => "Fair"
+        "value" => 12
+        "in_stock" => false
+      ]
+      1 => array:4 [
+        "price" => "292.26"
+        "state" => "Good"
+        "value" => 11
+        "in_stock" => false
+      ]
+      2 => array:4 [
+        "price" => "331.06"
+        "state" => "Excellent"
+        "value" => 10
+        "in_stock" => false
+      ]
+    ]
+  ]
+]
+
+  2023-02-12 09:44:27 Running [App\Jobs\ParserJob] 

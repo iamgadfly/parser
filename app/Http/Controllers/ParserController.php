@@ -17,7 +17,7 @@ class ParserController extends Controller
 {
     public static function index(){
         // $file = $request->file('file')->get();
-        $file = Storage::disk('local')->get('all.csv');
+        $file = Storage::disk('local')->get('iphones.csv');
         // dd($file);
         foreach(explode(',', $file) as $value){
               if(stristr($value, 'https://www.backmarket.com/en-us/p/')){
