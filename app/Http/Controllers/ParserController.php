@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,8 +18,8 @@ class ParserController extends Controller
 {
     public static function index(){
         // $file = $request->file('file')->get();
-        $file = Storage::disk('local')->get('iphones.csv');
-        // dd($file);
+        // dd('test');
+        $file = Storage::disk('local')->get('all.csv');
         foreach(explode(',', $file) as $value){
               if(stristr($value, 'https://www.backmarket.com/en-us/p/')){
                 $links[] = $value;
@@ -39,7 +40,6 @@ class ParserController extends Controller
             $response2 = Http::get("https://www.backmarket.com/bm/product/$product_id/v3/best_offers");
             $response_data = json_decode($response->body(), true);
             $response_data_about = json_decode($response2->body(), true);
-
             if(empty($response_data_about) || empty($response_data)){
                 Log::error('ERROR', [
                     'status_code' =>  $response->status(),
@@ -62,13 +62,62 @@ class ParserController extends Controller
             }
             }
             $data [] = [
-                'model' => $response_data['model'],
+                'price_new' => $response_data['priceWhenNew']['amount'] ?? null,
+                'model' => $response_data['model'] ?? null,
+                'product_id' => $product_id,
                 'link' => $response_data['links']['US']['href'] ?? null,
                 'model_about' => $response['subTitleElements'],
                 'states' => $data_state ?? null,
             ];
             unset($data_state);
         }
+
+        $dollar_price = 73.92;
+            foreach($data as $value){
+                $prod_id = DB::table('wp_postmeta')->where([
+                    'meta_key' => 'backmarket_id',
+                    'meta_value' => $value['product_id'],
+                ])->select('post_id')->first();
+
+                if(!is_null($prod_id)){
+                $product_state = DB::table('wp_postmeta')->where([
+                    'meta_key' => 'attribute_pa_sostoyanie',
+                    'post_id' => $prod_id->post_id,
+                ])->select('meta_value')->first();
+                $state_data = match($product_state->meta_value){
+                    'horoshee' =>  $value['states'][0],
+                    'otlichnoe' => $value['states'][1],
+                    'kak-novyj' => $value['states'][2],
+                };
+
+
+                DB::table('wp_postmeta')->where([
+                    'post_id' => $prod_id->post_id,
+                    'meta_key' => '_regular_price',
+                ])->update(['meta_value' => intval($value['price_new'] * $dollar_price),]);
+
+                DB::table('wp_postmeta')->where([
+                    'post_id' => $prod_id->post_id,
+                    'meta_key' => '_sale_price',
+                ])->update(['meta_value' =>  intval($state_data['price'] * $dollar_price)]);
+
+                    if($state_data['in_stock']){
+                        DB::table('wp_postmeta')->where([
+                            'post_id' => $prod_id->post_id,
+                            'meta_key' => '_stock_status',
+                        ])->update([
+                            'meta_value' => 'instock',
+                        ]);
+                    } else {
+                        DB::table('wp_postmeta')->where([
+                            'post_id' => $prod_id->post_id,
+                            'meta_key' => '_stock_status',
+                        ])->update(['meta_value' => 'outofstock',]);
+                    }
+                } else {
+                    Log::error('ID продукта нет в базе:', [$value['product_id']]);
+                }
+            }
          dd($data);
     }
 }
