@@ -58,7 +58,6 @@ class ParserController extends Controller
                         'in_stock' => $value['isDisabled'],
                     ];
                 }
-
             }
             }
             $data [] = [
@@ -119,5 +118,93 @@ class ParserController extends Controller
                 }
             }
          dd($data);
+    }
+
+    public static function parseByOneId($product_id)
+    {
+        // $product_id =  $req->product_id;
+        $response = Http::get("https://www.backmarket.com/bm/product/v2/$product_id");
+        $response2 = Http::get("https://www.backmarket.com/bm/product/$product_id/v3/best_offers");
+        $response_data = json_decode($response->body(), true);
+        $response_data_about = json_decode($response2->body(), true);
+        if(empty($response_data_about) || empty($response_data)){
+            Log::error('ERROR', [
+                'status_code' =>  $response->status(),
+                'response' => $response_data,
+            ]);
+            return response()->json(['Error' => 'Что-то пошло не так'], 400);
+        }
+
+        foreach($response_data_about as $value) {
+            if(is_array($value)){
+            if(isset($value['backboxGrade']) || isset($value['isDisabled']) || isset($value['price'])) {
+                $data_state []  = [
+                    'price' =>  $value['price']['amount'] ?? null,
+                    'state' => $value['backboxGrade']['name'],
+                    'value' => $value['backboxGrade']['value'],
+                    'in_stock' => $value['isDisabled'],
+                ];
+            }
+        }
+        }
+
+        $data [] = [
+            'price_new' => $response_data['priceWhenNew']['amount'] ?? null,
+            'model' => $response_data['model'] ?? null,
+            'product_id' => $product_id,
+            'link' => $response_data['links']['US']['href'] ?? null,
+            'model_about' => $response['subTitleElements'] ?? null,
+            'states' => $data_state ?? null,
+        ];
+
+            $dollar_price = 73.92;
+            if(empty($data)){
+                dd('Что-то пошло не так');
+            }
+
+            $prod_id = DB::table('wp_postmeta')->where([
+                'meta_key' => 'backmarket_id',
+                'meta_value' => $data[0]['product_id'],
+            ])->select('post_id')->first();
+
+            if(!is_null($prod_id) && !is_null($data[0]['states']) && !is_null($data[0]['price_new'])){
+            $product_state = DB::table('wp_postmeta')->where([
+                'meta_key' => 'attribute_pa_sostoyanie',
+                'post_id' => $prod_id->post_id,
+            ])->select('meta_value')->first();
+            $state_data = match($product_state->meta_value){
+                'horoshee' =>  $data[0]['states'][0],
+                'otlichnoe' => $data[0]['states'][1],
+                'kak-novyj' => $data[0]['states'][2],
+            };
+
+
+            DB::table('wp_postmeta')->where([
+                'post_id' => $prod_id->post_id,
+                'meta_key' => '_regular_price',
+            ])->update(['meta_value' => intval($data[0]['price_new'] * $dollar_price),]);
+
+            DB::table('wp_postmeta')->where([
+                'post_id' => $prod_id->post_id,
+                'meta_key' => '_sale_price',
+            ])->update(['meta_value' =>  intval($state_data['price'] * $dollar_price)]);
+
+                if($state_data['in_stock']){
+                    DB::table('wp_postmeta')->where([
+                        'post_id' => $prod_id->post_id,
+                        'meta_key' => '_stock_status',
+                    ])->update([
+                        'meta_value' => 'instock',
+                    ]);
+                } else {
+                    DB::table('wp_postmeta')->where([
+                        'post_id' => $prod_id->post_id,
+                        'meta_key' => '_stock_status',
+                    ])->update(['meta_value' => 'outofstock',]);
+                }
+            } else {
+                Log::error('ID продукта нет в базе:', [$data[0]['product_id']]);
+            }
+            dd($data);
     }
 }
