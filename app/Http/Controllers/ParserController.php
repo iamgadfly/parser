@@ -50,7 +50,7 @@ class ParserController extends Controller
 
             foreach($response_data_about as $value) {
                 if(is_array($value)){
-                if ($value['backboxGrade'] || $value['isDisabled'] || $value['price']) {
+                if(isset($value['backboxGrade']) || isset($value['isDisabled']) || isset($value['price'])) {
                     $data_state []  = [
                         'price' =>  $value['price']['amount'] ?? null,
                         'state' => $value['backboxGrade']['name'],
@@ -66,11 +66,11 @@ class ParserController extends Controller
                 'model' => $response_data['model'] ?? null,
                 'product_id' => $product_id,
                 'link' => $response_data['links']['US']['href'] ?? null,
-                'model_about' => $response['subTitleElements'],
+                'model_about' => $response['subTitleElements'] ?? null,
                 'states' => $data_state ?? null,
-            ];
+	    ];
             unset($data_state);
-        }
+	}
 
         $dollar_price = 73.92;
             foreach($data as $value){
@@ -79,7 +79,7 @@ class ParserController extends Controller
                     'meta_value' => $value['product_id'],
                 ])->select('post_id')->first();
 
-                if(!is_null($prod_id)){
+                if(!is_null($prod_id) && !is_null($value['states']) && !is_null($value['price_new'])){
                 $product_state = DB::table('wp_postmeta')->where([
                     'meta_key' => 'attribute_pa_sostoyanie',
                     'post_id' => $prod_id->post_id,
