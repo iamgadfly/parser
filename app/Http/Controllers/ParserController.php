@@ -13,13 +13,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-// use GuzzleHttp\Psr7\Request;
-
 class ParserController extends Controller
 {
     public static function index(){
-        // $file = $request->file('file')->get();
-        // dd('test');
         $file = Storage::disk('local')->get('all.csv');
         foreach(explode(',', $file) as $value){
               if(stristr($value, 'https://www.backmarket.com/en-us/p/')){
@@ -130,7 +126,6 @@ class ParserController extends Controller
 
     public static function parseByOneId($product_id)
     {
-        // $product_id =  $req->product_id;
         $response = Http::get("https://www.backmarket.com/bm/product/v2/$product_id");
         $response2 = Http::get("https://www.backmarket.com/bm/product/$product_id/v3/best_offers");
         $response_data = json_decode($response->body(), true);
