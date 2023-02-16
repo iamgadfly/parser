@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ProductsImport;
+use Carbon\Carbon;
 use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -34,7 +35,7 @@ class ParserController extends Controller
                 $product_ids [] = $link;
             }
         }
-
+        $path = Storage::path('parser/parse.log');
         foreach($product_ids as $product_id){
             $response = Http::get("https://www.backmarket.com/bm/product/v2/$product_id");
             $response2 = Http::get("https://www.backmarket.com/bm/product/$product_id/v3/best_offers");
@@ -69,9 +70,16 @@ class ParserController extends Controller
                 'states' => $data_state ?? null,
 	    ];
             unset($data_state);
+            $fp = fopen($path, 'a');
+            if(!empty($data)){
+                fwrite($fp, Carbon::now()->format('d-m-Y H:m:s') . " товар с ID $product_id спаршен" . PHP_EOL);
+            } else {
+                fwrite($fp, Carbon::now()->format('d-m-Y H:m:s') . " товар с ID $product_id не спаршен" . PHP_EOL);
+            }
+            fclose($fp);
 	}
 
-        $dollar_price = 73.92;
+            $dollar_price = 73.92;
             foreach($data as $value){
                 $prod_id = DB::table('wp_postmeta')->where([
                     'meta_key' => 'backmarket_id',
@@ -156,6 +164,15 @@ class ParserController extends Controller
             'model_about' => $response['subTitleElements'] ?? null,
             'states' => $data_state ?? null,
         ];
+
+            $path = Storage::path('parser/parse.log');
+            $fp = fopen($path, 'a');
+            if(!empty($data)){
+                fwrite($fp, Carbon::now()->format('d-m-Y H:m:s') . " товар с ID $product_id спаршен" . PHP_EOL);
+            } else {
+                fwrite($fp, Carbon::now()->format('d-m-Y H:m:s') . " товар с ID $product_id не спаршен" . PHP_EOL);
+            }
+            fclose($fp);
 
             $dollar_price = 73.92;
             if(empty($data)){
