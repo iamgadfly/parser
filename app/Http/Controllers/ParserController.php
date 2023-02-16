@@ -125,7 +125,7 @@ class ParserController extends Controller
                     Log::error('ID продукта нет в базе:', [$value['product_id']]);
                 }
             }
-         dd($data);
+        //  dd($data);
     }
 
     public static function parseByOneId($product_id)
