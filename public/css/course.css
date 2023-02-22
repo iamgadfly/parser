@@ -1,0 +1,208 @@
+body {
+    background: #eee;
+    font-family:  Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    padding: 0px;
+    margin: 0px;
+}
+a{
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+#regForm {
+    background-color: #ffffff;
+    margin: 0px auto;
+    font-family: 'Font Awesome 5 Free';
+    padding: 40px;
+    border-radius: 10px
+}
+
+#register{
+
+  color: #6A1B9A;
+}
+.height {
+height: 112px;
+display:flex;
+align-items:center;
+text-align:center;
+}
+
+p{
+    font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+.check {
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    border: 1px solid #aaaaaa;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    font-family:  Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+h6{
+    font-family:  Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+
+.tab input:focus{
+
+  border:1px solid #6a1b9a !important;
+  outline: none;
+}
+
+input.invalid {
+
+    border:1px solid #e03a0666;
+}
+
+.tab {
+    display: none
+}
+
+button {
+    background-color: #6A1B9A;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    padding: 10px 20px;
+    font-size: 17px;
+    cursor: pointer
+}
+
+button:hover {
+    opacity: 0.8
+}
+
+ h1{
+    color:#4e73df !important;
+    /* padding: 20px 20px 35px 20px; */
+    font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+p{
+    color:#4e73df !important;
+}
+
+// colors
+$color1: #1F8AFF;
+$color2: #898989;
+
+
+body {
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* .checkbox {
+  margin: 20px 0;
+  .checkbox-label {
+    position: relative;
+    display: block;
+    height: 20px;
+    width: 44px;
+    background: $color2;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 300ms ease;
+    &:after {
+      position: absolute;
+      left: -2px;
+      top: -3px;
+      display: block;
+      width: 26px;
+      height: 26px;
+      border-radius: 100px;
+      background: lighten($color2, 30%);
+      box-shadow: 0px 3px 3px rgba(0,0,0,0.05);
+      content: '';
+      transition: all 300ms ease;
+    }
+    &:active:after {
+      transform: scale(1.15, 0.85);
+    }
+  } */
+
+  /*
+  .checkbox-input {
+    display: none;
+    &:checked ~ label {
+      background: $color1;
+      &:after {
+        left: 20px;
+        background: darken($color1, 15%);
+      }
+    }
+    &:disabled ~ label {
+      background: lighten($color2, 30%);
+      pointer-events: none;
+      &:after {
+        background: lighten($color2, 20%);;
+      }
+    }
+  }
+
+} */
+
+
+i{
+    font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+button{
+    background-color: #4e73df !important;
+    border-radius: 5% !important;
+}
+
+button:focus{
+
+  outline: none !important;
+}
+
+#prevBtn {
+    background-color: #bbbbbb
+}
+
+
+.step {
+       height: 40px;
+    width: 40px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    color: #6a1b9a;
+    opacity: 0.5;
+}
+
+.step.active {
+    opacity: 1
+}
+
+
+.step.finish {
+   color: #fff;
+   background: #6a1b9a;
+   opacity: 1;
+
+}
+
+
+
+.all-steps {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px
+}
+
+.thanks-message {
+    display: none
+}

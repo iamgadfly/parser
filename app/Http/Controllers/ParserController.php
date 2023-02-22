@@ -31,6 +31,10 @@ class ParserController extends Controller
                 $product_ids [] = $link;
             }
         }
+        // $product_ids = DB::table('wp_postmeta')->where('meta_key', 'backmarket_id')->pluck('meta_value');
+        // SELECT post_id FROM wp_postmeta WHERE meta_key = 'backmarket_id' and meta_value = 'b5303639-e51f-47e0-b766-a42fc9e794e8';
+
+
         $path = Storage::path('parser/parse.log');
         foreach($product_ids as $product_id){
             $response = Http::get("https://www.backmarket.com/bm/product/v2/$product_id");
