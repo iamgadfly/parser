@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->float('price');
+            $table->decimal('price', 5,2);
             $table->boolean('is_auto')->default(false);
             $table->timestamps();
         });
@@ -25,6 +25,11 @@ return new class extends Migration
         DB::table('courses')->insert([
             'name' => 'Доллар',
             'price' => 74,
+        ]);
+
+        DB::table('courses')->insert([
+            'name' => 'Shopfans',
+            'price' => 83,
         ]);
     }
 

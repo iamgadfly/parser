@@ -23,7 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/parse', [ParserController::class, 'index']);
 
-Route::get('/test', function(){
-    dd(DB::table('wp_postmeta')->first());
-});
+// Route::get('/test', function(){
+    // dd(DB::table('wp_postmeta')->first());
+// });
+
+Route::post('/test_price', [HomeController::class, 'test']);
 

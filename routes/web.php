@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(static function () {
     Route::post('/add_job', [HomeController::class, 'addJob']);
 });
 
+
 Route::get('/login', [ControllersLoginController::class, 'index']);
 Route::post('/login', [ControllersLoginController::class, 'login'])->name('login');
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
