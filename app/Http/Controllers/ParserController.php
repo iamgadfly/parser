@@ -75,7 +75,7 @@ class ParserController extends Controller
             fclose($fp);
 	}
 
-            $dollar_price = 73.92;
+            $dollar_price = 74.76;
             foreach($data as $value){
                 $prod_id = DB::table('wp_postmeta')->where([
                     'meta_key' => 'backmarket_id',
@@ -169,7 +169,7 @@ class ParserController extends Controller
             }
             fclose($fp);
 
-            $dollar_price = 73.92;
+            $dollar_price = 74.76;
             if(empty($data)){
                 dd('Что-то пошло не так');
             }
