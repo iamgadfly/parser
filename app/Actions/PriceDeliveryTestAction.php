@@ -4,20 +4,11 @@ namespace App\Actions;
 
 use Illuminate\Support\Facades\DB;
 
-class PriceDeliveryAction
+class PriceDeliveryTestAction
 {
-    public function __invoke($product, $raw_price): int
+    public function __invoke(int $raw_price, string $category): int
     {
-        $categories_ids = DB::table('wp_term_taxonomy')->where([
-            ['taxonomy', '=', 'product_cat'],
-            ['parent', '=', 0],
-        ])->pluck('term_id')->toArray();
-
-        $product_categories = DB::table('wp_term_relationships')
-        ->where('object_id', $product->id)->pluck('term_taxonomy_id')->toArray();
-        $categories = array_intersect($categories_ids, $product_categories);
-        $category = DB::table('wp_terms')->where('term_id', end($categories))->first();
-        $weight = match($category->slug){
+        $weight = match($category){
             'smartfony' => 1,
             'vse-mobilnye-ustrojstva' => 1,
             'smart-chasy' => 1,
@@ -29,7 +20,7 @@ class PriceDeliveryAction
         };
             $delivery = match(true){
             $weight == 1 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
-            $weight == 1.5 && $raw_price > 450 =>  self::getDelivery($weight, 'Shopfans'),
+            // $weight == 1.5 && $raw_price > 450 =>  3222222,
             $weight == 3.5 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
             $weight == 15 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
             default => self::getDelivery($weight, 'Onex'),
@@ -45,14 +36,14 @@ class PriceDeliveryAction
             $weight == 15 && $delivery->name == 'Shopfans' => $delivery->price + 5,
             default => $delivery->price,
         };
-        $snopfan_course = DB::table('courses')->where('name', 'Shopfans')->first();
-        $dollar_course = DB::table('courses')->where('name', 'Доллар')->first();
+        $snopfan_course = 77;
+        $dollar_course = 74.55;
         $price_logistic = match(true){
-            $raw_price > 450 && $delivery->name = 'Shopfans' => $delivery_price * $snopfan_course->price * $comission,
+            $raw_price > 450 && $delivery->name = 'Shopfans' => $delivery_price * $snopfan_course * $comission,
             $raw_price > 380 && $raw_price < 450 && $delivery->name = 'Onex' => $delivery_price + (($raw_price - 380) * 0.15),
-            default => $delivery_price * $dollar_course->price * $comission,
+            default => $delivery_price * $dollar_course * $comission,
         };
-        $price =  intval($raw_price * ($dollar_course->price * 1.09) + $price_logistic);
+        $price =  intval($raw_price * ($dollar_course * 1.09) + $price_logistic);
 
         return $price;
     }
