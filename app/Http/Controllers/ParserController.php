@@ -79,8 +79,10 @@ class ParserController extends Controller
                 fwrite($fp, Carbon::now()->format('d-m-Y H:m:s') . " товар с ID $product_id не спаршен" . PHP_EOL);
             }
             fclose($fp);
+	}
 	    }
-            // $dollar_price = DB::table('courses')->where('name', 'Доллар')->first();
+    
+    	    // $dollar_price = DB::table('courses')->where('name', 'Доллар')->first();
             foreach($data as $value){
                 $product  = DB::select(DB::raw("SELECT * FROM wp_posts p JOIN wp_postmeta pm1 ON ( pm1.post_id = p.ID) WHERE p.post_type in('product', 'product_variation') AND p.post_status = 'publish' and pm1.meta_value = '$product_id' LIMIT 1"));
                 $product = $product[0];
