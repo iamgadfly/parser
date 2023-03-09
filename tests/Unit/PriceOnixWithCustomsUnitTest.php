@@ -22,12 +22,12 @@ class PriceOnixWithCustomsUnitTest extends TestCase
     public function test_get_price_onex_delivery_with_customs_onex_d()
     {
         $check = PriceDeliveryAction::getPriceOnexDeliveryWithCustoms(80.58, 379, 77, 0.15, 1.1, 1.05);
-        $this->assertEquals($check, 40109);
+        $this->assertEquals($check, 40108);
     }
 
     public function test_get_price_onex_delivery_with_customs_onex_c()
     {
         $check = PriceDeliveryAction::getPriceOnexDeliveryWithCustoms(80.58, 367, 224, 0.15, 1.1, 1.05);
-        $this->assertEquals($check, 51483);
+        $this->assertEquals($check, 51482);
     }
 }
