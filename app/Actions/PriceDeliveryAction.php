@@ -56,12 +56,12 @@ class PriceDeliveryAction
 
     public static function getPriceOnexDeliveryWithCustoms($dollar_course, $raw_price, $delivery, $customs_comisson, $agent_comission, $payment_comisson)
     {
-        return intval($dollar_course * $raw_price * $agent_comission + (($delivery + ($raw_price - 380) * $customs_comisson) * $dollar_course) * $payment_comisson);
+        return intval($dollar_course * ($raw_price * $agent_comission) + $delivery * $dollar_course * $payment_comisson);
     }
 
-    public static function getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, $agent_comission, $payment_comisson)
+    public static function getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, $agent_comission, $payment_comisson, $customs_comisson)
     {
-        return intval($dollar_course * ($raw_price * $agent_comission) + $delivery * $dollar_course * $payment_comisson);
+        return intval($dollar_course * $raw_price * $agent_comission + (($delivery + ($raw_price - 380) * $customs_comisson) * $dollar_course) * $payment_comisson);
     }
 
     public function getDelivery($weight, $name)
