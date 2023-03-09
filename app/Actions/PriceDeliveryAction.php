@@ -27,34 +27,41 @@ class PriceDeliveryAction
             'noutbuki' => 3.5,
             'monobloki' => 15,
         };
-            $delivery = match(true){
+        $delivery = match(true){
             $weight == 1 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
             $weight == 1.5 && $raw_price > 450 =>  self::getDelivery($weight, 'Shopfans'),
             $weight == 3.5 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
             $weight == 15 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
             default => self::getDelivery($weight, 'Onex'),
         };
-        $comission = match(true){
-            $delivery->name == 'Onex' => 1.05,
-            $delivery->name == 'Shopfans' => 1.03,
-        };
-        $delivery_price = (float)  match(true){
-            $weight == 1 && $delivery->name == 'Shopfans'  => $delivery->price + 3,
-            $weight == 1.5 && $delivery->name == 'Shopfans' => $delivery->price + 5,
-            $weight == 3.5 && $delivery->name == 'Shopfans' => $delivery->price + 5,
-            $weight == 15 && $delivery->name == 'Shopfans' => $delivery->price + 5,
-            default => $delivery->price,
-        };
-        $snopfan_course = DB::table('courses')->where('name', 'Shopfans')->first();
-        $dollar_course = DB::table('courses')->where('name', 'Доллар')->first();
-        $price_logistic = match(true){
-            $raw_price > 450 && $delivery->name = 'Shopfans' => $delivery_price * $snopfan_course->price * $comission,
-            $raw_price > 380 && $raw_price < 450 && $delivery->name = 'Onex' => $delivery_price + (($raw_price - 380) * 0.15),
-            default => $delivery_price * $dollar_course->price * $comission,
-        };
-        $price =  intval($raw_price * ($dollar_course->price * 1.09) + $price_logistic);
 
-        return $price;
+        $snopfan_course = DB::table('courses')->where('name', 'Shopfans')->first()->price;
+        $dollar_course = DB::table('courses')->where('name', 'Доллар')->first()->price;
+        $delivery = $delivery->price;
+
+        $price = match(true){
+            $weight == 1 && $raw_price > 450 => self::getPriceFirst($dollar_course, $raw_price, $delivery, $snopfan_course, 3),
+            $weight > 1 && $raw_price > 450 => self::getPriceFirst($dollar_course, $raw_price, $delivery, $snopfan_course, 5),
+            $weight >= 1 && $raw_price < 450 && $raw_price > 380 =>  self::getPriceSecond($dollar_course, $raw_price, $delivery),
+            $weight >= 1 && $raw_price < 380 => self::getPriceThird($dollar_course, $raw_price, $delivery),
+        };
+
+        return intval($price);
+    }
+
+    public static function getPriceFirst($dollar_course, $raw_price, $delivery, $snopfan_course, $col)
+    {
+        return $dollar_course * ($raw_price * 1.1) + ($delivery + $col) * $snopfan_course * 1.05;
+    }
+
+    public function getPriceSecond($dollar_course, $raw_price, $delivery)
+    {
+        return $dollar_course * $raw_price * 1.1 + (($delivery + ($raw_price - 380) * 0.15) * $dollar_course) * 1.05;
+    }
+
+    public static function getPriceThird($dollar_course, $raw_price, $delivery)
+    {
+        return $dollar_course * ($raw_price * 1.1) + $delivery * $dollar_course * 1.05;
     }
 
     public function getDelivery($weight, $name)

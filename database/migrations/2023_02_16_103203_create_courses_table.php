@@ -24,12 +24,12 @@ return new class extends Migration
 
         DB::table('courses')->insert([
             'name' => 'Доллар',
-            'price' => 74,
+            'price' => 80.58,
         ]);
 
         DB::table('courses')->insert([
             'name' => 'Shopfans',
-            'price' => 83,
+            'price' => 75.85,
         ]);
     }
 

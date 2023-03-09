@@ -35,8 +35,6 @@ class ParserController extends Controller
         }
         // $product_ids = DB::table('wp_postmeta')->where('meta_key', 'backmarket_id')->pluck('meta_value');
         // SELECT post_id FROM wp_postmeta WHERE meta_key = 'backmarket_id' and meta_value = 'b5303639-e51f-47e0-b766-a42fc9e794e8';
-
-
         $path = Storage::path('parser/parse.log');
         foreach($product_ids as $product_id){
             $response = Http::get("https://www.backmarket.com/bm/product/v2/$product_id");
@@ -80,9 +78,6 @@ class ParserController extends Controller
             }
             fclose($fp);
 	}
-	    }
-    
-    	    // $dollar_price = DB::table('courses')->where('name', 'Доллар')->first();
             foreach($data as $value){
                 $product  = DB::select(DB::raw("SELECT * FROM wp_posts p JOIN wp_postmeta pm1 ON ( pm1.post_id = p.ID) WHERE p.post_type in('product', 'product_variation') AND p.post_status = 'publish' and pm1.meta_value = '$product_id' LIMIT 1"));
                 $product = $product[0];
@@ -94,11 +89,6 @@ class ParserController extends Controller
                     'kak-novyj' => $value['states'][2],
                 };
                 $price = $action($product, $state_data['price']);
-
-                // DB::table('wp_postmeta')->where([
-                //     'post_id' => $product->post_id,
-                //     'meta_key' => '_regular_price',
-                // ])->update(['meta_value' => intval($value['price_new'] * $dollar_price->price),]);
 
                 DB::table('wp_postmeta')->where([
                     'post_id' => $product->post_id,
