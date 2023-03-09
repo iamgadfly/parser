@@ -40,28 +40,28 @@ class PriceDeliveryAction
         $delivery = $delivery->price;
 
         $price = match(true){
-            $weight == 1 && $raw_price > 450 => self::getPriceFirst($dollar_course, $raw_price, $delivery, $snopfan_course, 3),
-            $weight > 1 && $raw_price > 450 => self::getPriceFirst($dollar_course, $raw_price, $delivery, $snopfan_course, 5),
-            $weight >= 1 && $raw_price < 450 && $raw_price > 380 =>  self::getPriceSecond($dollar_course, $raw_price, $delivery),
-            $weight >= 1 && $raw_price < 380 => self::getPriceThird($dollar_course, $raw_price, $delivery),
+            $weight == 1 && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, 3, 1.1, 1.05),
+            $weight > 1 && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, 5, 1.1, 1.05),
+            $weight >= 1 && $raw_price < 450 && $raw_price > 380 =>  self::getPriceOnexDeliveryWithCustoms($dollar_course, $raw_price, $delivery, 0.15, 1.1, 1.05),
+            $weight >= 1 && $raw_price < 380 => self::getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, 1.1, 1.05),
         };
 
         return intval($price);
     }
 
-    public static function getPriceFirst($dollar_course, $raw_price, $delivery, $snopfan_course, $col)
+    public static function getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson)
     {
-        return $dollar_course * ($raw_price * 1.1) + ($delivery + $col) * $snopfan_course * 1.05;
+        return intval($dollar_course * ($raw_price * $agent_comission) + ($delivery + $customs_comisson) * $snopfan_course * $payment_comisson);
     }
 
-    public function getPriceSecond($dollar_course, $raw_price, $delivery)
+    public static function getPriceOnexDeliveryWithCustoms($dollar_course, $raw_price, $delivery, $customs_comisson, $agent_comission, $payment_comisson)
     {
-        return $dollar_course * $raw_price * 1.1 + (($delivery + ($raw_price - 380) * 0.15) * $dollar_course) * 1.05;
+        return intval($dollar_course * $raw_price * $agent_comission + (($delivery + ($raw_price - 380) * $customs_comisson) * $dollar_course) * $payment_comisson);
     }
 
-    public static function getPriceThird($dollar_course, $raw_price, $delivery)
+    public static function getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, $agent_comission, $payment_comisson)
     {
-        return $dollar_course * ($raw_price * 1.1) + $delivery * $dollar_course * 1.05;
+        return intval($dollar_course * ($raw_price * $agent_comission) + $delivery * $dollar_course * $payment_comisson);
     }
 
     public function getDelivery($weight, $name)
