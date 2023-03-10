@@ -43,10 +43,20 @@ class PriceDeliveryAction
             $weight == 1 && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, 3, 1.1, 1.05),
             $weight > 1 && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, 5, 1.1, 1.05),
             $weight >= 1 && $raw_price < 450 && $raw_price > 380 =>  self::getPriceOnexDeliveryWithCustoms($dollar_course, $raw_price, $delivery, 0.15, 1.1, 1.05),
-            $weight >= 1 && $raw_price < 380 => self::getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, 1.1, 1.05),
+            $weight >= 1 && $raw_price < 380 => self::getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, 1.1, 1.05, 0.15),
         };
 
         return intval($price);
+    }
+
+    public static function priceMatch($weight, $raw_price, $dollar_course, $delivery, $snopfan_course): int
+    {
+        return match(true){
+            $weight == 1 || $weight == 1.5 && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, 3, 1.1, 1.05),
+            $weight > 1.5 && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, 5, 1.1, 1.05),
+            $weight >= 1 && $raw_price < 450 && $raw_price > 380 =>  self::getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, 1.1, 1.05, 0.15),
+            $weight >= 1 && $raw_price < 380 => self::getPriceOnexDeliveryWithCustoms($dollar_course, $raw_price, $delivery, 0.15, 1.1, 1.05),
+        };
     }
 
     public static function getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson)
