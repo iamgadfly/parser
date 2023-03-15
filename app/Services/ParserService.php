@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ParserService
 {
-    public function parseByLinks(ProductRepository $productRepository): void
+    public function parseByLinks($products): void
     {
-        $products = $productRepository->getAllProducts();
+//        $products = $productRepository->getAllProducts();
         foreach ($products as $product){
             $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
             $parsed_data = $this->getDataFromParsedData($product, $this->getApiBackmarket($product->backmarket_id, false), $product_parsed_data_state);

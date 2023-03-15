@@ -16,7 +16,7 @@ class ParserController extends Controller
 {
     public static function index(ParserService $parserService, ProductRepository $productRepository)
     {
-        return $parserService->parseByLinks($productRepository);
+        return $parserService->parseByLinks($productRepository->getAllProducts());
     }
 
     public function parseByOneId(Request $request, ParserService $parserService, $product_id, $is_command = true)

@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Http\Controllers\ParserController;
+use App\Repositories\ProductRepository;
+use App\Services\ParserService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,9 +32,9 @@ class ParserJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(ParserService $parserService, ProductRepository $productRepository)
     {
         // Storage::disk('local')->get();
-        ParserController::index();
+        ParserController::index($parserService, $productRepository);
     }
 }
