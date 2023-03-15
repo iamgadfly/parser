@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Actions\PriceDeliveryAction;
+use App\Repositories\ProductRepository;
+use App\Services\ParserService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +16,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(PriceDeliveryAction::class, function (){
+            return new PriceDeliveryAction();
+        });
+
+        $this->app->bind(ParserService::class, function (){
+            return new ParserService();
+        });
+
+        $this->app->bind(ProductRepository::class, function (){
+            return new ProductRepository();
+        });
     }
 
     /**

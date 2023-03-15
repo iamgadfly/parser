@@ -2,10 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Exceptions\ClientNotFoundException;
-use App\Exceptions\RecordIsAlreadyExistsException;
-use App\Exceptions\SpecialistNotFoundException;
-use App\Helpers\AuthHelper;
 use Illuminate\Database\Eloquent\Model as Model;
 
 class Repository
@@ -16,7 +12,7 @@ class Repository
 
     public function all()
     {
-        return $this->model::all();
+        return $this->model::get();
     }
 
     public function getById(int $id)
@@ -56,21 +52,5 @@ class Repository
     public function massDelete(array $ids)
     {
         return $this->model::destroy($ids);
-    }
-
-    /**
-     * @throws SpecialistNotFoundException
-     */
-    public static function getSpecialistIdFromAuth(): ?int
-    {
-        return AuthHelper::getSpecialistIdFromAuth();
-    }
-
-    /**
-     * @throws ClientNotFoundException
-     */
-    public static function getClientIdFromAuth(): ?int
-    {
-        return AuthHelper::getClientIdFromAuth();
     }
 }
