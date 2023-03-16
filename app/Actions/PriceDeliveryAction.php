@@ -82,7 +82,8 @@ class PriceDeliveryAction
             'Смартфоны' => 1,
             'Apple' => 1,
             'iPhone' => 1,
-
+	    'Смарт-часы' => 1,
+            'Apple Watch' => 1,
             'smart-chasy' => 1,
             'apple' => 1,
             'iphone' => 1,
@@ -94,7 +95,7 @@ class PriceDeliveryAction
             'MacBook' => 3.5,
             'noutbuki' => 3.5,
             'Ноутбуки' => 3.5,
-
+	    'iMac' => 15,
             'monobloki' => 15,
             'Моноблоки' => 15,
             default=> null,
