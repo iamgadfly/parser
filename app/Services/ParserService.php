@@ -22,7 +22,12 @@ class ParserService
 
         foreach ($products as $product){
             $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
-            $parsed_data = $this->getDataFromParsedData($product, $this->getApiBackmarket($product->backmarket_id, false), $product_parsed_data_state);
+            $data_state = $this->getApiBackmarket($product->backmarket_id, false);
+            if($data_state === false || $product_parsed_data_state === false){
+                logger('bug_url', [$product->backmarket_id]);
+                continue;
+            }
+            $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
             $state_data = match($product->state){
                 'horoshee' =>  $parsed_data['states'][0] ?? null,
                 'otlichnoe' => $parsed_data['states'][1] ?? null,
@@ -127,7 +132,12 @@ class ParserService
             false => "https://www.backmarket.com/bm/product/v2/$product_id",
         };
 
-        return json_decode(Http::get($url)->body(), true) ?? false;
+        $response = Http::get($url)->body() ?? false;
+        if($response === false){
+            return false;
+        }
+
+        return json_decode($response, true);
     }
 
 
