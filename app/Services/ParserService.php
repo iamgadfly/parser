@@ -35,6 +35,10 @@ class ParserService
             $stock = $this->getStock($state_data['in_stock']);
             $post_ids[] = $product->post_id;
             $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
+            if(is_null($weight)){
+                logger('bug', ['product_category'=> $product->product_category, 'price' => $state_data['price']]);
+                continue;
+            }
             $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
             if(is_null($delivery)){
                 logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);

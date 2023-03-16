@@ -97,6 +97,7 @@ class PriceDeliveryAction
 
             'monobloki' => 15,
             'Моноблоки' => 15,
+            default=> null,
         };
     }
 
