@@ -21,12 +21,17 @@ class ParserService
         $snopfan_course = $productRepository->getCourseByName('Shopfans');
 
         foreach ($products as $product){
-            $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
+            if(iconv_strlen($product->backmarket_id) != 36){
+	    logger('bug_url', [$product->backmarket_id, $product]);
+	    continue;
+	    }
+	    $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
             $data_state = $this->getApiBackmarket($product->backmarket_id, false);
-            if($data_state === false || $product_parsed_data_state === false){
-                logger('bug_url', [$product->backmarket_id]);
-                continue;
-            }
+       	
+	    // if($data_state === false || $product_parsed_data_state === false){
+              //  logger('bug_url', [$product->backmarket_id]);
+              //  continue;
+           // }
             $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
             $state_data = match($product->state){
                 'horoshee' =>  $parsed_data['states'][0] ?? null,
@@ -56,7 +61,7 @@ class ParserService
             $query_price[] = $price;
             $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
             $this->writeLog($state_data, $product->backmarket_id);
-        }
+       }
         $query_sale_price = implode(', ', $query_price);
         $query_stat = implode(' ', $query_status);
         $product_ids = implode(', ', $post_ids);
@@ -132,12 +137,12 @@ class ParserService
             false => "https://www.backmarket.com/bm/product/v2/$product_id",
         };
 
-        $response = Http::get($url)->body() ?? false;
+        $response = Http::get($url) ?? false;
         if($response === false){
             return false;
         }
 
-        return json_decode($response, true);
+        return json_decode($response->body(), true);
     }
 
 
