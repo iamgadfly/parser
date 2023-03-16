@@ -114,8 +114,14 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Обзор</h1>
-                        <a href="/chnage_course" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Обновить цену </a>
+                        <a href="/chnage_course/Доллар" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Обновить курс Доллара </a>
+
+                        <a href="/chnage_course/Shopfans" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Обновить курс Shopfans </a>
+
+                        <a href="/deliveries" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Обновить курсы доставок</a>
                     </div>
 
                     <!-- Content Row -->
@@ -201,14 +207,6 @@
                                 <div class="card-body" id="add_job"
                                     style="height: 80px; display:flex; align-items:center; justify-content:center; text-align:center; cursor: pointer;">
                                     Запустить обновление принудительно
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card bg-success text-white shadow">
-                                <div class="card-body height"
-                                    style="height: 80px; display:flex; align-items:center;  justify-content:center; text-align:center">
-                                    Поменять время автоматического обновления
                                 </div>
                             </div>
                         </div>

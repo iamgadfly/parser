@@ -38,7 +38,7 @@ class ParseByLink extends Command
         $product_parsed_data_state =  $parserService->getDataState($parserService->getApiBackmarket($product_id));
         $parsed_data = $parserService->getDataFromParsedData($product, $parserService->getApiBackmarket($product_id, false), $product_parsed_data_state);
 
-        $product  = DB::select(DB::raw("SELECT * FROM wp_posts p JOIN wp_postmeta pm1 ON ( pm1.post_id = p.ID) WHERE p.post_type in('product', 'product_variation') AND p.post_status = 'publish' and pm1.meta_value = '$product_id' LIMIT 1"));
+        $product  = $productRepository->getOneProduct($product_id);
         $product = $product[0] ?? null;
         $product_state = substr($product->post_name, strrpos($product->post_name, '-') + 1);
         $state_data = match($product_state){

@@ -16,15 +16,6 @@ use Illuminate\Support\Facades\Session as FacadesSession;
 
 class HomeController extends Controller
 {
-    // /**
-    //  * Create a new controller instance.
-    //  *
-    //  * @return void
-    //  */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
     /**
      * Show the application dashboard.
      *
@@ -58,16 +49,16 @@ class HomeController extends Controller
         return redirect('login');
     }
 
-    public function getChaneCoursePage()
+    public function getChaneCoursePage($name)
     {
-        $course = Course::where('name', 'Доллар')->first();
+        $course = Course::where('name', $name)->first();
         return view('change_course', compact('course'));
     }
 
-    public function saveCourse(Request $req)
+    public function saveCourse(Request $req, $name)
     {
         // dd($req->all());
-        $coure = Course::where('name', 'Доллар')->first();
+        $coure = Course::where('name', $name)->first();
         $coure->price = $req->price ? $req->price : $coure->price;
         $coure->is_auto = $req->is_auto ? true : false;
         $coure->save();
@@ -84,10 +75,6 @@ class HomeController extends Controller
         } else {
             return response()->json(['Error' => 'Что-то пошло не так']);
         }
-        // Artisan::call("parse_one", [
-            // 'product_id' => $req->product_id,
-        // ]);
-        // dd($req->all());
     }
 
     public function getUpdateProductView()
@@ -102,90 +89,15 @@ class HomeController extends Controller
         return $this->success('true', 200);
     }
 
-    public function test(Request $request)
+    public function getDeliveriesView()
     {
-        $categories_ids = DB::table('wp_term_taxonomy')->where([
-            ['taxonomy', '=', 'product_cat'],
-            ['parent', '=', 0],
-        ])->pluck('term_id')->toArray();
+        $deliveries = DB::table('deliveries')->get();
 
-        $product_categories = DB::table('wp_term_relationships')
-        ->where('object_id', $request->object_id)->pluck('term_taxonomy_id')->toArray();
-
-        $categories = array_intersect($categories_ids, $product_categories);
-        $category = DB::table('wp_terms')->where('term_id', end($categories))
-        ->first();
-        $weight = match($category->slug){
-            'smartfony' => 1,
-            'vse-mobilnye-ustrojstva' => 1,
-            'smart-chasy' => 1,
-            'apple' => 1,
-            'iphone' => 1,
-            'planshety' => 1.5,
-            'noutbuki' => 3.5,
-            'monobloki' => 15,
-        };
-        $raw_price = $request->raw_price;
-        // $delivery = DB::table('deliveries')->where('weight', $weight)->first();
-        // $delivery_price = self::getDelivery($weight, 'Onex');
-            $delivery = match(true){
-            $weight == 1 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
-            // $weight == 1 && $raw_price > 380 && $raw_price < 450 => 32323213123,
-            // $weight == 1 && $raw_price < 380 =>      12312312123,
-            $weight == 1.5 && $raw_price > 450 =>  3222222,
-            // $weight == 1.5 && $raw_price > 380 && $raw_price < 450 => 32323213123,
-            // $weight == 1.5 && $raw_price < 380 =>      12312312123,
-            $weight == 3.5 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
-            // $weight == 3.5 && $raw_price > 380 && $raw_price < 450 => 32323213123,
-            // $weight == 3.5 && $raw_price < 380 =>      12312312123,
-
-            $weight == 15 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
-            // $weight == 15 && $raw_price > 380 && $raw_price < 450 => 32323213123,
-            // $weight == 15 &&$raw_price < 380 =>      12312312123,
-            // $weight = 3, $ewewe = 322,
-            // Вес равен 1кг и стоимость меньше 380
-            // $weight == 1 and $raw_price > 450 =>  3222222,
-            // $weight == 1 and $raw_price > 450 =>  3222222,
-            // $weight == 1 and $raw_price > 450 =>  3222222,
-            default => self::getDelivery($weight, 'Onex'),
-        };
-
-        $comission = match(true){
-            $delivery->name == 'Onex' => 1.05,
-            $delivery->name == 'Shopfans' => 1.03,
-        };
-
-        // dd($delivery);
-
-        $delivery_price = (float)  match(true){
-            $weight == 1 && $delivery->name == 'Shopfans'  => $delivery->price + 3,
-            $weight == 3.5 && $delivery->name == 'Shopfans' => $delivery->price + 5,
-            $weight == 15 && $delivery->name == 'Shopfans' => $delivery->price + 5,
-            default => $delivery->price,
-        };
-        $snopfan_course = DB::table('courses')->where('name', 'Shopfans')->first();
-        $dollar_course = DB::table('courses')->where('name', 'Доллар')->first();
-        $price_logistic = match(true){
-            $raw_price > 450 && $delivery->name = 'Shopfans' => $delivery_price * $snopfan_course->price * $comission,
-            $raw_price > 380 && $raw_price < 450 && $delivery->name = 'Onex' => $delivery_price + (($raw_price - 380) * 0.15),
-            default => $delivery_price * $dollar_course->price * $comission,
-        };
-        $price =  intval($raw_price * ((int) $dollar_course->price * 1.1271) + $price_logistic);
-
-        return response()->json([
-            'raw_price' => $raw_price * $dollar_course->price,
-            'price_logistic' => $price_logistic,
-            'dollar_course' => (int) $dollar_course->price,
-            'price' => $price,
-        ]);
+        return view('deliveries', compact('deliveries'));
     }
 
-    public function getDelivery($weight, $name)
+    public function saveDiliveries(Request $request)
     {
-        $weight_price =  DB::table('deliveries')->where([
-            ['weight', '=', $weight],
-            ['name', '=', $name],
-        ])->first();
-        return $weight_price;
+        dd($request->all());
     }
 }

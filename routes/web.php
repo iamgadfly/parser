@@ -29,12 +29,15 @@ use Orchid\Platform\Http\Controllers\LoginController;
 
 Route::middleware(['auth'])->group(static function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/chnage_course', [HomeController::class, 'getChaneCoursePage']);
-    Route::post('/chnage_course', [HomeController::class, 'saveCourse'])->name('change_course');
-    Route::get('/logout', [HomeController::class, 'logout'])->name('logout');
+    Route::get('/chnage_course/{name}', [HomeController::class, 'getChaneCoursePage']);
+    Route::post('/chnage_course/{name}', [HomeController::class, 'saveCourse'])->name('change_course');
+    Route::get('/logout', [HomeController::class, 'lophpgout'])->name('logout');
     Route::get('/update_product', [HomeController::class, 'getUpdateProductView']);
     Route::post('/update_product', [HomeController::class, 'updateProduct']);
     Route::post('/add_job', [HomeController::class, 'addJob']);
+
+    Route::post('/save_deliveries', [HomeController::class, 'saveDiliveries']);
+    Route::get('/deliveries', [HomeController::class, 'getDeliveriesView']);
 });
 
 

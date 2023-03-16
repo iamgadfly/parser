@@ -11,7 +11,7 @@ height: 100%;
     <div class="container mt-5">
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col-md-8">
-                <form method="POST" action="/chnage_course" id="regForm" style="width: 500px;">
+                <form method="POST" action="/chnage_course/{{$course->name}}" id="regForm" style="width: 500px;">
                     @csrf
                     <h1 id="register">Обновлние курса</h1>
 
