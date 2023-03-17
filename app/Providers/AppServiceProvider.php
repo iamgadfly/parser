@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Actions\PriceDeliveryAction;
+use App\Repositories\DeliveryRepository;
+use App\Repositories\DeliveryRepositoryRepository;
 use App\Repositories\ProductRepository;
 use App\Services\ParserService;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(ProductRepository::class, function (){
+            return new ProductRepository();
+        });
+
+        $this->app->bind(DeliveryRepository::class, function (){
             return new ProductRepository();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ParserJob;
 use App\Models\Course;
+use App\Repositories\DeliveryRepository;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Client\Request as ClientRequest;
@@ -84,7 +85,8 @@ class HomeController extends Controller
 
     public function addJob()
     {
-        dispatch(new ParserJob());
+//        dispatch(new ParserJob());
+        Artisan::call("dispatch_parser");
         return response()->json(true, 200);
         return $this->success('true', 200);
     }
@@ -96,8 +98,22 @@ class HomeController extends Controller
         return view('deliveries', compact('deliveries'));
     }
 
-    public function saveDiliveries(Request $request)
+    public function saveDiliveries(Request $request, $deliveryRepository = new DeliveryRepository())
     {
-        dd($request->all());
+        $data =  $request->all();
+        unset($data['_token']);
+        $count = '';
+        foreach ($data as $value){
+            $count++;
+            if(!is_null($value)){
+                $prod_ids[] = $count;
+                $prices[] =  "WHEN id = $count THEN $value";
+            }
+        }
+        $prices =   implode(' ', $prices);
+        $delivery_ids = implode(', ', $prod_ids);
+        $deliveryRepository->updateDelivery($delivery_ids, $prices);
+
+        return redirect('');
     }
 }

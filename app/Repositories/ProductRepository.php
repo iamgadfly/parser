@@ -47,9 +47,9 @@ class ProductRepository
         DB::select(DB::raw("UPDATE `wp_postmeta` SET meta_value = ELT(FIELD(post_id, $product_ids), $query_sale_price) WHERE post_id IN ($product_ids) and meta_key='_sale_price';"));
     }
 
-    public function updateStockStatus($product_ids, $query_stat)
+    public function updateStockStatus($product_ids, $query_stat, $meta_key)
     {
-        DB::update("UPDATE wp_postmeta SET meta_value = CASE $query_stat END WHERE post_id IN ($product_ids) and meta_key='_stock_status'");
+        DB::update("UPDATE wp_postmeta SET meta_value = CASE $query_stat END WHERE post_id IN ($product_ids) and meta_key='$meta_key'");
     }
 
    /* public function getComissons()

@@ -19,55 +19,50 @@ class ParserService
         $products = $productRepository->getAllProducts();
         $dollar_course = $productRepository->getCourseByName('Доллар');
         $snopfan_course = $productRepository->getCourseByName('Shopfans');
-
         foreach ($products as $product){
-            if(iconv_strlen($product->backmarket_id) != 36){
-	    logger('bug_url', [$product->backmarket_id, $product]);
-	    continue;
-	    }
-	    $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
+            if(is_null($product->backmarket_id)){
+                continue;
+            }
+	        $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
             $data_state = $this->getApiBackmarket($product->backmarket_id, false);
-       	
-	    // if($data_state === false || $product_parsed_data_state === false){
-              //  logger('bug_url', [$product->backmarket_id]);
-              //  continue;
-           // }
             $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
             $state_data = match($product->state){
                 'horoshee' =>  $parsed_data['states'][0] ?? null,
                 'otlichnoe' => $parsed_data['states'][1] ?? null,
                 'kak-novyj' => $parsed_data['states'][2] ?? null,
             };
+
             if(empty($state_data['price'])){
                 $this->writeLog([], $product->backmarket_id);
                 continue;
             }
             $stock = $this->getStock($state_data['in_stock']);
+            $count = $this->getCount($state_data);
+
             $post_ids[] = $product->post_id;
             $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
-            if(is_null($weight)){
-                logger('bug', ['product_category'=> $product->product_category, 'price' => $state_data['price']]);
-                continue;
-            }
             $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
             if(is_null($delivery)){
-                logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
+//                logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
                 continue;
             }
-
             $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
             $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
 
             $query_price[] = $price;
             $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
+            $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
+
             $this->writeLog($state_data, $product->backmarket_id);
-       }
+        }
         $query_sale_price = implode(', ', $query_price);
         $query_stat = implode(' ', $query_status);
+        $query_stat_stock = implode(' ', $query_value);
         $product_ids = implode(', ', $post_ids);
 
         $productRepository->updatePrice($product_ids, $query_sale_price);
-        $productRepository->updateStockStatus($product_ids, $query_stat);
+        $productRepository->updateStockStatus($product_ids, $query_stat, '_stock_status');
+        $productRepository->updateStockStatus($product_ids, $query_stat_stock, '_stock');
 
         dd('Продукт успешно обовлен');
     }
@@ -87,11 +82,14 @@ class ParserService
             'kak-novyj' => $parsed_data['states'][2],
         };
         $stock = $this->getStock($state_data['in_stock']);
+        $count = $this->getCount($state_data);
+
         $post_parent_id = DB::table('wp_posts')->select('post_parent')->where('ID', $product->post_id)->first();
         $price = $action($post_parent_id->post_parent, $state_data['price']);
 
         $productRepository->updateParserData($price, $product->post_id, '_sale_price');
         $productRepository->updateParserData($stock, $product->post_id, '_stock_status');
+        $productRepository->updateParserData($count, $product->post_id, '_stock');
 
         dd('Продукт успешно обнолвен');
     }
@@ -128,6 +126,18 @@ class ParserService
             true => 'instock',
             false => 'outofstock',
         };
+    }
+
+    public function getCount($state_data):int
+    {
+        if($state_data['in_stock'] === true || $state_data['in_stock'] === false  && isset($state_data['stock'])){
+            $count = $state_data['stock'];
+        } else if ($state_data['in_stock'] === true && !isset($state_data['stock'])){
+            $count = 10;
+        } else {
+            $count = 0;
+        }
+        return $count;
     }
 
     public function getApiBackMarket(string $product_id, bool $is_state = true):array | false

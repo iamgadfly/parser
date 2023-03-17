@@ -11,6 +11,7 @@
     width: 700px;
 ">
 <form action="/save_deliveries" method="POST" style="700px">
+    @csrf
 @foreach($deliveries as $delivery)
     <div class="block__container">
         <div class="block__container-text" style="    display: flex;
@@ -19,9 +20,9 @@
     align-items: center;">
             <div class="name">Название {{$delivery->name}}</div>
             <div class="name">Вес: {{$delivery->weight}} кг</div>
-            <input class="check nput-style" placeholder="{{$delivery->price}}" name="price" style="width: 250px;">
-            <input type="hidden" name="wight" value="{{$delivery->weight}}">
-            <input type="hidden" name="name" value="{{$delivery->name}}">
+{{--            <input type="hidden" name="{{$delivery->id}}" value="{{$delivery->name}}">--}}
+            <input class="check nput-style" placeholder="{{$delivery->price}}" name="price_{{$delivery->id}}" style="width: 250px;">
+{{--            <input type="hidden" name="wight" value="{{$delivery->weight}}">--}}
         </div>
     </div>
 
