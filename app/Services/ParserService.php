@@ -20,7 +20,7 @@ class ParserService
         $dollar_course = $productRepository->getCourseByName('Доллар');
         $snopfan_course = $productRepository->getCourseByName('Shopfans');
         foreach ($products as $product){
-            if(is_null($product->backmarket_id)){
+            if(is_null($product->backmarket_id) || $product->backmarket_id == ''){
                 continue;
             }
 	        $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
@@ -46,9 +46,13 @@ class ParserService
                 continue;
             }
             $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
-            $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
+	    if(is_null($customs_comisson)){
+		      logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
+		    continue;
+	    }
+	    $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
             $post_ids[] = $product->post_id;
-            $links[] = $data_state['links']['US']['href'];
+            //$links[] = $data_state['links']['US']['href'];
             $query_price[] = $price;
             $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
             $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
@@ -61,7 +65,7 @@ class ParserService
         }
 
         $parent = $this->updateProductParent($check_product);
-        $links_query = implode(' ', $links);
+      //  $links_query = implode(' ', $links);
         $query_sale_price = implode(', ', $query_price);
         $query_stat = implode(' ', $query_status);
         $query_stat_stock = implode(' ', $query_value);
