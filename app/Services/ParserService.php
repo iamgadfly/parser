@@ -39,7 +39,6 @@ class ParserService
             $stock = $this->getStock($state_data['in_stock']);
             $count = $this->getCount($state_data);
 
-            $post_ids[] = $product->post_id;
             $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
             $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
             if(is_null($delivery)){
@@ -48,21 +47,33 @@ class ParserService
             }
             $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
             $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
-
+            $post_ids[] = $product->post_id;
+            $links[] = $data_state['links']['US']['href'];
             $query_price[] = $price;
             $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
             $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
 
             $this->writeLog($state_data, $product->backmarket_id);
+
+            if (!isset($check_product[$product->post_parent][$product->post_id])){
+                $check_product [$product->post_parent][$product->post_id] = $stock;
+            }
         }
+
+        $parent = $this->updateProductParent($check_product);
+        $links_query = implode(' ', $links);
         $query_sale_price = implode(', ', $query_price);
         $query_stat = implode(' ', $query_status);
         $query_stat_stock = implode(' ', $query_value);
         $product_ids = implode(', ', $post_ids);
+        $parent_ids = implode(', ', array_keys($parent));
+        $parent_status = implode(' ', array_values($parent));
 
         $productRepository->updatePrice($product_ids, $query_sale_price);
         $productRepository->updateStockStatus($product_ids, $query_stat, '_stock_status');
         $productRepository->updateStockStatus($product_ids, $query_stat_stock, '_stock');
+//        $productRepository->updateStockStatus($product_ids, $links_query, 'backmarket_url');
+        $productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
 
         dd('Продукт успешно обовлен');
     }
@@ -109,6 +120,19 @@ class ParserService
             }
         }
         return $data_state ?? null;
+    }
+
+    public function updateProductParent(array $states):array
+    {
+        foreach ($states as $key => $val){
+            if(in_array('instock', $states[$key])){
+                $data[$key]= "WHEN post_id = $key THEN 'instock'";
+            } else {
+                $data[$key]= "WHEN post_id = $key THEN 'outofstock'";
+            }
+        }
+
+        return $data;
     }
 
     public function getState($sost, $parsed_data):array

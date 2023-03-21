@@ -14,12 +14,7 @@ class ProductRepository
     public function getByBackMarketId(string $back_market_id):array
     {
          $raw_data = DB::select(DB::raw("SELECT post_id, meta_key, meta_value FROM wp_postmeta WHERE post_id = ( SELECT post_id FROM wp_postmeta WHERE meta_key = 'backmarket_id' and meta_value='$back_market_id' limit 1);"));
-         foreach ($raw_data as $value){
-             $product[$value->meta_key] = $value->meta_value;
-             $post_id = $value->post_id;
-         }
-        $product['post_id'] = $post_id;
-         return $product;
+         return self::convertedData($raw_data);
     }
 
     public function getAllProducts(): array
@@ -43,7 +38,8 @@ class ProductRepository
       return DB::select(DB::raw("SELECT * FROM wp_posts p JOIN wp_postmeta pm1 ON ( pm1.post_id = p.ID) WHERE p.post_type in('product', 'product_variation') AND p.post_status = 'publish' and pm1.meta_value = '$product_id' LIMIT 1"));
     }
 
-    public function updatePrice($product_ids, $query_sale_price){
+    public function updatePrice($product_ids, $query_sale_price)
+    {
         DB::select(DB::raw("UPDATE `wp_postmeta` SET meta_value = ELT(FIELD(post_id, $product_ids), $query_sale_price) WHERE post_id IN ($product_ids) and meta_key='_sale_price';"));
     }
 
@@ -52,13 +48,25 @@ class ProductRepository
         DB::update("UPDATE wp_postmeta SET meta_value = CASE $query_stat END WHERE post_id IN ($product_ids) and meta_key='$meta_key'");
     }
 
-   /* public function getComissons()
+    public function getProductById($id):array
     {
-        return DB::table('deliveries')->whereNot('name', ['Shopfans', 'Onex'])->get();
-    }*/
+        $raw_data = DB::select(DB::raw("SELECT post_id, meta_key, meta_value FROM wp_postmeta WHERE post_id = $id;"));
+        return self::convertedData($raw_data);
+    }
+
 
     public function getCourseByName($name):int
     {
         return DB::table('courses')->where('name', $name)->first()->price;
+    }
+
+    public static function convertedData($raw_data):array
+    {
+        foreach ($raw_data as $value){
+            $product[$value->meta_key] = $value->meta_value;
+            $post_id = $value->post_id;
+        }
+        $product['post_id'] = $post_id;
+        return $product;
     }
 }

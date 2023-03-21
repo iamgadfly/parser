@@ -7,6 +7,7 @@ use App\Repositories\DeliveryRepository;
 use App\Repositories\DeliveryRepositoryRepository;
 use App\Repositories\ProductRepository;
 use App\Services\ParserService;
+use App\Services\YandexService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(DeliveryRepository::class, function (){
             return new ProductRepository();
+        });
+
+        $this->app->bind(YandexService::class, function (){
+            return new YandexService();
         });
     }
 

@@ -1,19 +1,10 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController as ControllersLoginController;
-use App\Models\Course;
-use Carbon\Carbon;
-use Illuminate\Contracts\Session\Session;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session as FacadesSession;
-use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Row;
 use Orchid\Platform\Http\Controllers\LoginController;
+use App\Http\Controllers\YandexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +30,8 @@ Route::middleware(['auth'])->group(static function () {
     Route::post('/save_deliveries', [HomeController::class, 'saveDiliveries']);
     Route::get('/deliveries', [HomeController::class, 'getDeliveriesView']);
 });
-
-
 Route::get('/login', [ControllersLoginController::class, 'index']);
 Route::post('/login', [ControllersLoginController::class, 'login'])->name('login');
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Replay to Yandex
+Route::post('/order/accept', [YandexController::class, 'accept']);
