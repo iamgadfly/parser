@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\AddUrlJob;
 use App\Jobs\ParserJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new ParserJob)->hourly();
+//        $schedule->job(new AddUrlJob)->everyMinute();
     }
 
     /**
