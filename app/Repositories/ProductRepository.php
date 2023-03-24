@@ -39,6 +39,16 @@ class ProductRepository
       return DB::select(DB::raw("SELECT * FROM wp_posts p JOIN wp_postmeta pm1 ON ( pm1.post_id = p.ID) WHERE p.post_type in('product', 'product_variation') AND p.post_status = 'publish' and pm1.meta_value = '$product_id' LIMIT 1"));
     }
 
+    public function getProductByIds($product_ids):array
+    {
+        $raw_data = DB::select(DB::raw(" select post_id, meta_key, meta_value from wp_postmeta where post_id IN ($product_ids) and (meta_key='_stock_status' OR meta_key='_sale_price');"));
+        $raw_data = array_chunk($raw_data, ceil(count($raw_data) / count(explode(',', $product_ids))));
+        foreach ($raw_data as $value){
+            $products[] =  self::convertedData($value);
+        }
+        return $products;
+    }
+
     public function updatePrice($product_ids, $query_sale_price)
     {
         DB::select(DB::raw("UPDATE `wp_postmeta` SET meta_value = ELT(FIELD(post_id, $product_ids), $query_sale_price) WHERE post_id IN ($product_ids) and meta_key='_sale_price';"));
