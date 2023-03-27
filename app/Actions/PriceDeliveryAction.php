@@ -73,6 +73,11 @@ class PriceDeliveryAction
         };
     }
 
+    public static function priceRound(int $price, int $subcount):int
+    {
+        return $subcount*floor($price/$subcount); //в меньшую сторону
+    }
+
     public static function getWeightByCategory($product_category)
     {
         return match($product_category){
