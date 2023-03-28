@@ -54,13 +54,14 @@ class PriceDeliveryAction
         return intval($dollar_course * $raw_price * $agent_comission + (($delivery + ($raw_price - 380) * $customs_comisson) * $dollar_course) * $payment_comisson);
     }
 
-    public static function getCustomsСommissionsByWeightAndPrice($weight, $raw_price):int
+    public static function getCustomsСommissionsByWeightAndPrice($weight, $raw_price):int | null
     {
         return match(true){
             $weight == 1 || $weight == 1.5 && $raw_price > 450 => 3,
             $weight > 1.5 && $raw_price > 450 => 5,
             $weight >= 1 && $raw_price < 450 && $raw_price > 380 => 0.15,
             $weight >= 1 && $raw_price < 380 =>  0.15,
+            default => null,
         };
     }
 

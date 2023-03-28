@@ -47,7 +47,7 @@ class ParserService
             }
             $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
             if(is_null($customs_comisson)){
-                  logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
+                logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
                 continue;
             }
 	        $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
@@ -152,17 +152,9 @@ class ParserService
     public function getStock($stock)
     {
         return match ($stock){
-<<<<<<< HEAD
-     //       true => 'instock',
-       //     false => 'outofstock',
-      true => 'outofstock',
-            false => 'instock',        
-	};
-=======
             true => 'outofstock',
             false => 'instock',
         };
->>>>>>> e5f1da9cd34faced3d9a07ef3c453b6a5ca6d022
     }
 
     public function getCount($state_data):int
