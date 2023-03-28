@@ -160,7 +160,7 @@ class ParserService
     public function getCount($state_data):int
     {
         if($state_data['in_stock'] === false || $state_data['in_stock'] === true  && isset($state_data['stock'])){
-            $count = $state_data['stock'];
+            $count = $state_data['value'];
         } else if ($state_data['in_stock'] === false && !isset($state_data['stock'])){
             $count = 10;
         } else {
