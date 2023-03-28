@@ -20,26 +20,26 @@ class ParserService
         $dollar_course = $productRepository->getCourseByName('Доллар');
         $snopfan_course = $productRepository->getCourseByName('Shopfans');
         foreach ($products as $product){
-            if(is_null($product->backmarket_id) || $product->backmarket_id == ''){
+            if(is_null($product['backmarket_id']) || $product['backmarket_id'] == ''){
                 continue;
             }
-	        $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
-            $data_state = $this->getApiBackmarket($product->backmarket_id, false);
+	        $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product['backmarket_id']));
+            $data_state = $this->getApiBackmarket($product['backmarket_id'], false);
             $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
-            $state_data = match($product->state){
+            $state_data = match($product['state']){
                 'horoshee' =>  $parsed_data['states'][0] ?? null,
                 'otlichnoe' => $parsed_data['states'][1] ?? null,
                 'kak-novyj' => $parsed_data['states'][2] ?? null,
             };
 
             if(empty($state_data['price'])){
-                $this->writeLog([], $product->backmarket_id);
+                $this->writeLog([], $product['backmarket_id']);
                 continue;
             }
             $stock = $this->getStock($state_data['in_stock']);
             $count = $this->getCount($state_data);
 
-            $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
+            $weight = PriceDeliveryAction::getWeightByCategory($product['product_category']);
             $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
             if(is_null($delivery)){
 //                logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
@@ -50,17 +50,18 @@ class ParserService
                   logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
                 continue;
             }
-	    $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
-            $post_ids[] = $product->post_id;
+	        $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
+            $post_ids[] = $product['post_id'];
             //$links[] = $data_state['links']['US']['href'];
             $query_price[] = $price;
-            $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
-            $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
+            $post_id = $product['post_id'];
+            $query_status[] = "WHEN post_id = $post_id THEN '$stock'";
+            $query_value[] = "WHEN post_id = $post_id THEN '$count'";
 
-            $this->writeLog($state_data, $product->backmarket_id);
+            $this->writeLog($state_data, $product['backmarket_id']);
 
-            if (!isset($check_product[$product->post_parent][$product->post_id])){
-                $check_product [$product->post_parent][$product->post_id] = $stock;
+            if (!isset($check_product[$product['post_parent']][$product['post_id']])){
+                $check_product [$product['post_parent']][$product['post_id']] = $stock;
             }
         }
 
@@ -151,16 +152,22 @@ class ParserService
     public function getStock($stock)
     {
         return match ($stock){
+<<<<<<< HEAD
      //       true => 'instock',
        //     false => 'outofstock',
       true => 'outofstock',
             false => 'instock',        
 	};
+=======
+            true => 'outofstock',
+            false => 'instock',
+        };
+>>>>>>> e5f1da9cd34faced3d9a07ef3c453b6a5ca6d022
     }
 
     public function getCount($state_data):int
     {
-        if($state_data['in_stock'] === true || $state_data['in_stock'] === false  && isset($state_data['stock'])){
+        if($state_data['in_stock'] === false || $state_data['in_stock'] === true  && isset($state_data['stock'])){
             $count = $state_data['stock'];
         } else if ($state_data['in_stock'] === false && !isset($state_data['stock'])){
             $count = 10;

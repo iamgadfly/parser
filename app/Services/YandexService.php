@@ -21,7 +21,6 @@ class YandexService
 
     public function aboutProduct($req_data)
     {
-        $req_data['items'][0]['offerId'] = 10400;
         return match (count($req_data['items'])){
             1 => $this->checkProductOne($req_data),
             default => $this->checkProducts($req_data),
@@ -31,22 +30,40 @@ class YandexService
     public function checkProductOne($data)
     {
         $product = $this->productRepository->getProductById($data['items'][0]['offerId']);
-        $product['_stock_status'] = 'instock';
-        if($product['_stock_status'] === 'outofstock'){
-            return response()->json([
-                'order' => [
-                    'accepted' => false,
-                    'id' => (string) $data['items'][0]['id'],
-                    'reason' => 'OUT_OF_STOCK',
-                ],
-            ]);
-        } else {
-            return  322;
-        }
+
+        $accepted = match ($product['_stock_status'] === 'outofstock'){
+            true => false,
+            false => true,
+        };
+        return $this->responce($accepted, $data['id']);
+
+    }
+
+    public function responce(bool $accepted, $order_id)
+    {
+        return response()->json([
+            'order' => [
+                'accepted' => $accepted,
+                'id' => (string) $order_id,
+            ],
+        ]);
     }
 
     public function checkProducts($data)
     {
-         return 322;
+        foreach ($data['items'] as $value){
+            $post_ids[] = $value['offerId'];
+        }
+        $products = $this->productRepository->getProductByIds(implode(', ', $post_ids));
+            foreach ($products as $product) {
+                $stocks[] = $product['_stock_status'] ?? null;
+            }
+
+        $accepted = match (!in_array('outofstock', $stocks)){
+          true => true,
+          false => false,
+        };
+
+        return $this->responce($accepted, $data['id']);
     }
 }
