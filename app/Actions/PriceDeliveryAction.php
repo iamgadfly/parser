@@ -62,7 +62,7 @@ class PriceDeliveryAction
         };
     }
 
-    public static function getDeliveryByWeightAndPrice($weight, $raw_price):int
+    public static function getDeliveryByWeightAndPrice($weight, $raw_price)
     {
         return match(true){
             $weight == 1 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
@@ -102,11 +102,11 @@ class PriceDeliveryAction
         };
     }
 
-    public static function getDelivery($weight, $name): int
+    public static function getDelivery($weight, $name)
     {
         return  DB::table('deliveries')->where([
             ['weight', '=', $weight],
             ['name', '=', $name],
-        ])->first()->price;
+        ])->first()->price ?? null;
     }
 }
