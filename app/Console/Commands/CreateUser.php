@@ -30,10 +30,14 @@ class CreateUser extends Command
     public function handle()
     {
         $options = $this->options();
-        dd(User::forceCreate([
+ 	//dd(User::where('email', '5PDWrnd78gHR@mail.ru')->delete());
+	//dd(User::get());	
+	//return User::get();   
+    	User::forceCreate([
             'email' => $options['email'],
             'password' => Hash::make($options['password']),
-        ]));
-        // return Command::SUCCESS;
+        ]);
+
+         return Command::SUCCESS;
     }
 }

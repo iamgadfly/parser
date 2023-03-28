@@ -34,6 +34,7 @@ class ParserJob implements ShouldQueue
      */
     public function handle(ParserService $parserService, ProductRepository $productRepository)
     {
+	logger('test', ['test']);
         ParserController::index($parserService, $productRepository);
     }
 }

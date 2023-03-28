@@ -152,9 +152,17 @@ class ParserService
     public function getStock($stock)
     {
         return match ($stock){
+<<<<<<< HEAD
+     //       true => 'instock',
+       //     false => 'outofstock',
+      true => 'outofstock',
+            false => 'instock',        
+	};
+=======
             true => 'outofstock',
             false => 'instock',
         };
+>>>>>>> e5f1da9cd34faced3d9a07ef3c453b6a5ca6d022
     }
 
     public function getCount($state_data):int

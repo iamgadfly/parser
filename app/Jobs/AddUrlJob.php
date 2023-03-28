@@ -38,8 +38,11 @@ class AddUrlJob implements ShouldQueue
                 continue;
             }
             $data_state = $parserService->getApiBackmarket($product->backmarket_id, false);
-            $link = $data_state['links']['US']['href'];
-            $insert_data[] = "($product->post_id, 'backmarket_url', '$link')";
+            $link = $data_state['links']['US']['href'] ?? null;
+           if(is_null($link)){
+	    continue;
+	   }
+	     $insert_data[] = "($product->post_id, 'backmarket_url', '$link')";
         }
         $insert = implode(', ', array_unique($insert_data));
         $productRepository->insertBackMarketUrl($insert);
