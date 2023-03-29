@@ -24,7 +24,7 @@ class ParserService
             logger('bug_empty_url', $product);
             continue;
             }
-	        $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product['backmarket_id']));
+	    $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product['backmarket_id']));
             $data_state = $this->getApiBackmarket($product['backmarket_id'], false);
             $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
             $state_data = match($product['state']){
@@ -37,12 +37,12 @@ class ParserService
             $weight = PriceDeliveryAction::getWeightByCategory($product['product_category']);
             $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
                 if(is_null($delivery)){
-                    logger('bug', ['wight'=> $weight, 'price' => $state_data['price'], 'product' => $product]);
+                    logger('bug', ['weight'=> $weight, 'price' => $state_data['price'], 'product' => $product]);
                     continue;
                 }
                 $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
-                if(is_null($customs_comisson)){
-                    logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
+		if(is_null($customs_comisson)){
+                    logger('bug', ['weight'=> $weight, 'price' => $state_data['price']]);
                     continue;
                 }
                 $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
