@@ -20,10 +20,9 @@ class ParserService
         $dollar_course = $productRepository->getCourseByName('Доллар');
         $snopfan_course = $productRepository->getCourseByName('Shopfans');
         foreach ($products as $product){
-            if(empry($product['backmarket_id']) ||is_null($product['backmarket_id']) || $product['backmarket_id'] == ''){
-                //logger('bug', ['backmarket_id' => $product['backmarket_id'], 'product' => $product]]);
-		logger('bug_empty_url', $product);
-		continue;
+            if(empty($product['backmarket_id']) ||is_null($product['backmarket_id']) || $product['backmarket_id'] == ''){
+            logger('bug_empty_url', $product);
+            continue;
             }
 	        $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product['backmarket_id']));
             $data_state = $this->getApiBackmarket($product['backmarket_id'], false);
@@ -34,25 +33,27 @@ class ParserService
                 'kak-novyj' => $parsed_data['states'][2] ?? null,
             };
 
-            if(empty($state_data['price'])){
-                $this->writeLog([], $product['backmarket_id']);
-                continue;
-            }
-            $stock = $this->getStock($state_data['in_stock']);
-            $count = $this->getCount($state_data);
-
+            if(!empty($state_data['price'])){
             $weight = PriceDeliveryAction::getWeightByCategory($product['product_category']);
             $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
-            if(is_null($delivery)){
-                logger('bug', ['wight'=> $weight, 'price' => $state_data['price'], 'product' => $product]);
-                continue;
+                if(is_null($delivery)){
+                    logger('bug', ['wight'=> $weight, 'price' => $state_data['price'], 'product' => $product]);
+                    continue;
+                }
+                $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
+                if(is_null($customs_comisson)){
+                    logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
+                    continue;
+                }
+                $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
+                $stock = $this->getStock($state_data['in_stock']);
+                $count = $this->getCount($state_data);
+            } else {
+                $stock = 'outofstock';
+                $count = 0;
+                $price = $product['price'];
             }
-            $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
-            if(is_null($customs_comisson)){
-                logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
-                continue;
-            }
-	        $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
+
             $post_ids[] = $product['post_id'];
             //$links[] = $data_state['links']['US']['href'];
             $query_price[] = $price;
