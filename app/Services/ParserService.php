@@ -20,8 +20,10 @@ class ParserService
         $dollar_course = $productRepository->getCourseByName('Доллар');
         $snopfan_course = $productRepository->getCourseByName('Shopfans');
         foreach ($products as $product){
-            if(is_null($product['backmarket_id']) || $product['backmarket_id'] == ''){
-                continue;
+            if(empry($product['backmarket_id']) ||is_null($product['backmarket_id']) || $product['backmarket_id'] == ''){
+                //logger('bug', ['backmarket_id' => $product['backmarket_id'], 'product' => $product]]);
+		logger('bug_empty_url', $product);
+		continue;
             }
 	        $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product['backmarket_id']));
             $data_state = $this->getApiBackmarket($product['backmarket_id'], false);
@@ -42,7 +44,7 @@ class ParserService
             $weight = PriceDeliveryAction::getWeightByCategory($product['product_category']);
             $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
             if(is_null($delivery)){
-//                logger('bug', ['wight'=> $weight, 'price' => $state_data['price']]);
+                logger('bug', ['wight'=> $weight, 'price' => $state_data['price'], 'product' => $product]);
                 continue;
             }
             $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
