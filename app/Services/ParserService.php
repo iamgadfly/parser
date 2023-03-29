@@ -51,19 +51,23 @@ class ParserService
             } else {
                 $stock = 'outofstock';
                 $count = 0;
-                $price = $product['price'];
+                $price = $product['price'] != '' ? $product['price'] : 0;
             }
 
+	    if(!empty($product['post_id'])){
             $post_ids[] = $product['post_id'];
             //$links[] = $data_state['links']['US']['href'];
             $query_price[] = $price;
             $post_id = $product['post_id'];
             $query_status[] = "WHEN post_id = $post_id THEN '$stock'";
             $query_value[] = "WHEN post_id = $post_id THEN '$count'";
-
-            $this->writeLog($state_data, $product['backmarket_id']);
-
-            if (!isset($check_product[$product['post_parent']][$product['post_id']])){
+	    }
+	    if(is_null($state_data)){
+		 $state_data = [];
+	    }
+	    $this->writeLog($state_data, $product['backmarket_id']);
+	    
+	    if (!isset($check_product[$product['post_parent']][$product['post_id']])){
                 $check_product [$product['post_parent']][$product['post_id']] = $stock;
             }
         }
