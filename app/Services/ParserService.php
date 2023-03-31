@@ -24,7 +24,8 @@ class ParserService
             logger('bug_empty_url', $product);
             continue;
             }
-	    $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product['backmarket_id']));
+	    
+	    $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
             $data_state = $this->getApiBackmarket($product->backmarket_id, false);
             $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
             $state_data = match($product->state){
@@ -32,8 +33,7 @@ class ParserService
                 'otlichnoe' => $parsed_data['states'][1] ?? null,
                 'kak-novyj' => $parsed_data['states'][2] ?? null,
             };
-
-            if(!empty($state_data['price'])){
+            if(!is_null($state_data['price'])){
             $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
             $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
                 if(is_null($delivery)){
@@ -53,7 +53,7 @@ class ParserService
                 $count = 0;
                 $price = $product->price != '' ? $product->price : 0;
             }
-
+	  
 	    if(!empty($product->post_id)){
             $post_ids[] = $product->post_id;
             //$links[] = $data_state['links']['US']['href'];
@@ -65,16 +65,20 @@ class ParserService
 	    if(is_null($state_data)){
 		 $state_data = [];
 	    }
-	    $this->writeLog($state_data, $product['backmarket_id']);
+	    $this->writeLog($state_data, $product->backmarket_id);
 
-	    if (!isset($check_product[$product['post_parent']][$product->post_id])){
-                $check_product [$product['post_parent']][$product->post_id] = $stock;
-            }
+	    if (!isset($check_product[$product->post_parent][$product->post_id])){
+                $check_product [$product->post_parent][$product->post_id] = $stock;
+            } else {
+	 	$check_product = [];
+	   }
         }
 
+
         $parent = $this->updateProductParent($check_product);
-      //  $links_query = implode(' ', $links);
-        $query_sale_price = implode(', ', $query_price);
+	//  $links_query = implode(' ', $links);
+      
+	$query_sale_price = implode(', ', $query_price);
         $query_stat = implode(' ', $query_status);
         $query_stat_stock = implode(' ', $query_value);
         $product_ids = implode(', ', $post_ids);
