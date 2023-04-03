@@ -20,20 +20,20 @@ class ParserService
         $dollar_course = $productRepository->getCourseByName('Доллар');
         $snopfan_course = $productRepository->getCourseByName('Shopfans');
         foreach ($products as $product){
-            if(empty($product->backmarket_id) ||is_null($product->backmarket_id) || $product->backmarket_id == ''){
-            logger('bug_empty_url', $product);
+            if(empty($product->backmarket_id) ||is_null($product->backmarket_id) || $product->backmarket_id == '' || is_null($product->state)){
+            logger('bug_empty_url', [$product]);
             continue;
             }
 	    
 	    $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
             $data_state = $this->getApiBackmarket($product->backmarket_id, false);
             $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
-            $state_data = match($product->state){
+	    $state_data = match($product->state){
                 'horoshee' =>  $parsed_data['states'][0] ?? null,
                 'otlichnoe' => $parsed_data['states'][1] ?? null,
                 'kak-novyj' => $parsed_data['states'][2] ?? null,
             };
-            if(!is_null($state_data['price'])){
+            if(isset($state_data['price']) && !is_null($state_data['price'])){
             $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
             $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
                 if(is_null($delivery)){
@@ -69,9 +69,10 @@ class ParserService
 
 	    if (!isset($check_product[$product->post_parent][$product->post_id])){
                 $check_product [$product->post_parent][$product->post_id] = $stock;
-            } else {
-	 	$check_product = [];
-	   }
+	    }
+	   // else {
+	 //	$check_product = [];
+	   //}
         }
 
 
