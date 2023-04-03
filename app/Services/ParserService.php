@@ -24,7 +24,7 @@ class ParserService
             logger('bug_empty_url', [$product]);
             continue;
             }
-	    
+
 	    $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
             $data_state = $this->getApiBackmarket($product->backmarket_id, false);
             $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
@@ -41,7 +41,7 @@ class ParserService
                     continue;
                 }
                 $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
-		if(is_null($customs_comisson)){
+		        if(is_null($customs_comisson)){
                     logger('bug', ['weight'=> $weight, 'price' => $state_data['price']]);
                     continue;
                 }
@@ -53,7 +53,7 @@ class ParserService
                 $count = 0;
                 $price = $product->price != '' ? $product->price : 0;
             }
-	  
+
 	    if(!empty($product->post_id)){
             $post_ids[] = $product->post_id;
             //$links[] = $data_state['links']['US']['href'];
@@ -78,7 +78,7 @@ class ParserService
 
         $parent = $this->updateProductParent($check_product);
 	//  $links_query = implode(' ', $links);
-      
+
 	$query_sale_price = implode(', ', $query_price);
         $query_stat = implode(' ', $query_status);
         $query_stat_stock = implode(' ', $query_value);

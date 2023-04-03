@@ -58,7 +58,7 @@ class PriceDeliveryAction
     {
         return match(true){
             $weight == 1 || $weight == 1.5 && $raw_price > 450 => 3,
-            $weight > 1.5 && $raw_price > 450 => 5,
+            $weight > 1.5 && $raw_price >= 450 => 5,
             $weight >= 1 && $raw_price < 450 && $raw_price > 380 => 0.15,
             $weight >= 1 && $raw_price <= 380 =>  0.15,
             default => null,
