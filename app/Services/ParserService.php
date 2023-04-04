@@ -48,11 +48,13 @@ class ParserService
                 $price = PriceDeliveryAction::priceCalculate($weight, (int) $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05);
                 $stock = $this->getStock($state_data['in_stock']);
                 $count = $this->getCount($state_data);
-            } else {
+            } else if($product->price != '' || !is_null($product->price)) {
                 $stock = 'outofstock';
                 $count = 0;
-                $price =!is_null($product->price) ? $product->price : 0;
-            }
+                $price = $product->price != '' ? $product->price : 0;
+	    } else {
+	   	continue; 
+	    }
 
 	    if(!empty($product->post_id)){
             $post_ids[] = $product->post_id;
