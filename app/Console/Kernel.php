@@ -18,7 +18,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new ParserJob)->everyMinute();
-	
 	//->everyMinute();
 	//->hourly();
        // $schedule->job(new AddUrlJob)->everyMinute();

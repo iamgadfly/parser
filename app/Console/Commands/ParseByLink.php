@@ -33,6 +33,18 @@ class ParseByLink extends Command
      */
     public function handle(ParserService $parserService, ProductRepository $productRepository, PriceDeliveryAction $action)
     {
+        $runtime = new \paralel\Runtime();
+        $future = $runtime->run(function(){
+            for ($i = 0; $i < 100; $i++)
+                echo "*";
+            return "easy";
+        });
+        for ($i = 0; $i < 100; $i++) {
+            echo ".";
+        }
+
+        dd($future->value());
+//        return;
         $product_id = $this->option('product_id');
         $product = $productRepository->getByBackMarketId($product_id);
         $product_parsed_data_state =  $parserService->getDataState($parserService->getApiBackmarket($product_id));

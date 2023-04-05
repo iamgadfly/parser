@@ -31,9 +31,10 @@ class PriceDeliveryAction
     {
         $price = match(true){
             $weight == 1 || $weight == 1.5 && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson),
-            $weight > 1.5 && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson),
+            $weight > 1.5 && $raw_price >= 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson),
             $weight >= 1 && $raw_price < 450 && $raw_price > 380 =>  self::getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, $agent_comission, $payment_comisson, $customs_comisson),
             $weight >= 1 && $raw_price <= 380 => self::getPriceOnexDeliveryWithCustoms($dollar_course, $raw_price, $delivery, $customs_comisson, $agent_comission, $payment_comisson),
+            default => null,
         };
 
         return self::priceRound($price, 50);
@@ -57,9 +58,9 @@ class PriceDeliveryAction
     public static function getCustomsСommissionsByWeightAndPrice($weight, $raw_price):int | null
     {
         return match(true){
-            $weight == 1 || $weight == 1.5 && $raw_price > 450 => 3,
+            $weight == 1 || $weight == 1.5 && $raw_price >= 450 => 3,
             $weight > 1.5 && $raw_price >= 450 => 5,
-            $weight >= 1 && $raw_price < 450 && $raw_price > 380 => 0.15,
+            $weight >= 1 && $raw_price <= 450 && $raw_price >= 380 => 0.15,
             $weight >= 1 && $raw_price <= 380 =>  0.15,
             default => null,
         };
@@ -90,13 +91,13 @@ class PriceDeliveryAction
             'Смартфоны' => 1,
             'Apple' => 1,
             'iPhone' => 1,
-	    'Смарт-часы' => 1,
+	         'Смарт-часы' => 1,
             'Apple Watch' => 1,
             'smart-chasy' => 1,
             'apple' => 1,
             'iphone' => 1,
             'Samsung' => 1,
-	    'planshety' => 1.5,
+	         'planshety' => 1.5,
 
             'Планшеты' => 1.5,
             'iPad' => 1.5,
