@@ -57,41 +57,38 @@ class ParserService
                     }
                     $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
                     if(is_null($customs_comisson)){
-                        logger('bug customs_comisson cant be null'), ['weight'=> $weight, 'price' => $state_data['price']]);
+                        logger('bug customs_comisson cant be null', ['weight'=> $weight, 'price' => $state_data['price']]);
                         continue;
                     }
                     $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) ?? null;
                     $stock = $this->getStock($state_data['in_stock']);
                     $count = $this->getCount($state_data);
-		} else if (!is_null($product->regular_price) && is_null($state_data['price'])) {
+		} else if (!is_null($product->regular_price) && is_null($state_data['price']) && isset($product->regular_price) && isset($state_data['price'])) {
                     $stock = 'outofstock';
                     $count = 0;
 		    $price = PriceDeliveryAction::priceRound($product->regular_price, 50); 
 		} else {
-			logger('bug empty regular_price and state price = NULL', ['prod'=> $product, 'state'=> $state_data]);
-			continue;
+		logger('bug empty regular_price and state price = NULL', ['prod'=> $product, 'state'=> $state_data]);
+		continue;
 		}
 
-                if(!empty($product->post_id)){
                     $post_ids[] = $product->post_id;
                     //$links[] = $data_state['links']['US']['href'];
                     $query_price[] = $price;
 //                    $post_id = $product->post_id;
                     $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
                     $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
-                }
                 if(is_null($state_data)){
                     $state_data = [];
                 }
                 $this->writeLog($state_data, $product->backmarket_id);
 
-                if (!isset($check_product[$product->post_parent][$product->post_id])){
+              //  if (!isset($check_product[$product->post_parent][$product->post_id])){
                     $check_product [$product->post_parent][$product->post_id] = $stock;
-                }
+               // }
             }
                 $parent = $this->updateProductParent($check_product);
                 //  $links_query = implode(' ', $links);
-
                 $query_sale_price = implode(', ', $query_price);
                 $query_stat = implode(' ', $query_status);
                 $query_stat_stock = implode(' ', $query_value);
