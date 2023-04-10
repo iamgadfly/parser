@@ -15,9 +15,6 @@ class YandexService
 
     public function aboutProduct($req_data)
     {
-        if (empty($req_data)) {
-            return response()->json(['Error' => 'Data is invalid'], 400);
-        }
         return match(count($req_data['items'])) {
             1 => $this->checkProductOne($req_data),
         default=> $this->checkProducts($req_data),
