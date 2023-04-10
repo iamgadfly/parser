@@ -2,9 +2,8 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController as ControllersLoginController;
-use Illuminate\Support\Facades\Route;
-use Orchid\Platform\Http\Controllers\LoginController;
 use App\Http\Controllers\YandexController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +14,7 @@ use App\Http\Controllers\YandexController;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
-
+ */
 
 Route::middleware(['auth'])->group(static function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -34,4 +32,5 @@ Route::get('/login', [ControllersLoginController::class, 'index']);
 Route::post('/login', [ControllersLoginController::class, 'login'])->name('login');
 
 // Replay to Yandex
-Route::post('/order/accept', [YandexController::class, 'accept']);
+
+Route::middleware('check_token')->post('/order/accept', [YandexController::class, 'accept']);
