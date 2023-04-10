@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ParserController extends Controller
 {
-    public static function index(ParserService $parserService, ProductRepository $productRepository)
+    public static function index(ParserService $parserService)
     {
-        return $parserService->parseByLinks($productRepository);
+        return $parserService->parseByLinks();
     }
 
     public static function parseByOneId(Request $request, ParserService $parserService, $product_id, $is_command = true)

@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(ParserService::class, function (){
-            return new ParserService();
+            return new ParserService(new ProductRepository());
         });
 
         $this->app->bind(ProductRepository::class, function (){

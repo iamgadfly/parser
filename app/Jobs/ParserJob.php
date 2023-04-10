@@ -32,9 +32,9 @@ class ParserJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ParserService $parserService, ProductRepository $productRepository)
+    public function handle(ParserService $parserService)
     {
-	logger('test', ['test']);
-        ParserController::index($parserService, $productRepository);
+	    logger('parser', ['start']);
+        ParserController::index($parserService);
     }
 }
