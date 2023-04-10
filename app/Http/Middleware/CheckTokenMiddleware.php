@@ -17,7 +17,7 @@ class CheckTokenMiddleware
     public function handle(Request $request, Closure $next)
     {
         if ($request->header('token') !== 'Gcc?!bxTEjitDTR7PNG8uakl-n?-ARZrsUj/Q!H91Xs4E96F5rRL6rO983DF!DwG') {
-            return response()->json(['Error' => 'Token is invalid']);
+            return response()->json('', 403);
         }
         return $next($request);
     }
