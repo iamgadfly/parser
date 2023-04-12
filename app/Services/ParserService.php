@@ -64,6 +64,9 @@ class ParserService
                     $stock = 'outofstock';
                     $count = 0;
                     $price = PriceDeliveryAction::priceRound($product->regular_price, 50);
+					//if($price < $product->price){
+					//}
+					$common_price = ($price < $product->price) === true ? $product->price : $product->regular_price + rand(5000, 10000);						//$product->regular_price + rand(5000, 10000);
                 } else {
                     logger('bug empty regular_price and state price = NULL', ['prod' => $product, 'state' => $state_data]);
                     continue;
@@ -71,6 +74,7 @@ class ParserService
 
                 $post_ids[] = $product->post_id;
                 $query_price[] = $price;
+				$query_common_price[] = $common_price ?? $product->price;
                 $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
                 $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
                 if (is_null($state_data)) {
@@ -83,14 +87,16 @@ class ParserService
             $parent = $this->updateProductParent($check_product);
             //  $links_query = implode(' ', $links);
             $query_sale_price = implode(', ', $query_price);
-            $query_stat = implode(' ', $query_status);
+			$query_common_price = implode(', ', $query_common_price);
+		    $query_stat = implode(' ', $query_status);
             $query_stat_stock = implode(' ', $query_value);
             $product_ids = implode(', ', $post_ids);
             $parent_ids = implode(', ', array_keys($parent));
             $parent_status = implode(' ', array_values($parent));
 
-            $this->productRepository->updatePrice($product_ids, $query_sale_price);
-            $this->productRepository->updateStockStatus($product_ids, $query_stat, '_stock_status');
+            $this->productRepository->updatePrice($product_ids, $query_sale_price, '_sale_price');
+		    $this->productRepository->updatePrice($product_ids, $query_common_price, '_price');
+			$this->productRepository->updateStockStatus($product_ids, $query_stat, '_stock_status');
             $this->productRepository->updateStockStatus($product_ids, $query_stat_stock, '_stock');
             //        $productRepository->updateStockStatus($product_ids, $links_query, 'backmarket_url');
             $this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
