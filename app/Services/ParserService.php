@@ -66,7 +66,8 @@ class ParserService
                     $price = PriceDeliveryAction::priceRound($product->regular_price, 50);
 					//if($price < $product->price){
 					//}
-					$common_price = ($price < $product->price) === true ? $product->price : $product->regular_price + rand(5000, 10000);						//$product->regular_price + rand(5000, 10000);
+					$common_price = PriceDeliveryAction::priceRound(($price < $product->price) === true ? $product->price : $product->regular_price + rand(5000, 10000), 50);
+					//$product->regular_price + rand(5000, 10000);
                 } else {
                     logger('bug empty regular_price and state price = NULL', ['prod' => $product, 'state' => $state_data]);
                     continue;
