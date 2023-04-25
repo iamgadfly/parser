@@ -103,7 +103,7 @@ class ParserService
             $this->productRepository->updateStockStatus($product_ids, $query_stat_stock, '_stock');
             //        $productRepository->updateStockStatus($product_ids, $links_query, 'backmarket_url');
             $this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
-	    }
+	    });
         } catch (\Exception$e) {
             logger('error', [$e]);
         }
