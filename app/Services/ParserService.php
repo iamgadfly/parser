@@ -32,7 +32,9 @@ class ParserService
     {
         try {
             foreach ($products as $product) {
-                if (empty($product->backmarket_id) || is_null($product->backmarket_id) || $product->backmarket_id == '' || is_null($product->state)) {
+	//	if(strcasecmp($product->backmarket_id, '8524e855-08d5-42fb-be73-9b9a0b7b2e61') == 0){
+	//	logger('test', [$product]);
+	    if (empty($product->backmarket_id) || is_null($product->backmarket_id) || $product->backmarket_id == '' || is_null($product->state)) {
                     logger('bug_empty_url (backmarket_id)', [$product]);
                     continue;
                 }
@@ -45,7 +47,7 @@ class ParserService
                     'otlichnoe' => $parsed_data['states'][1] ?? null,
                     'kak-novyj' => $parsed_data['states'][2] ?? null,
                 };
-                if (isset($state_data['price']) && !is_null($state_data['price'])) {
+                if (isset($state_data['price']) && !is_null($state_data['price']) && !is_null($product->price) && isset($product->price) && !empty($product->price)) {
                     $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
                     $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
                     if (is_null($delivery)) {
@@ -66,10 +68,10 @@ class ParserService
                     $price = PriceDeliveryAction::priceRound($product->regular_price, 50);
 					//if($price < $product->price){
 					//}
-					$common_price = PriceDeliveryAction::priceRound(($price < $product->price) === true ? $product->price : $product->regular_price + rand(5000, 10000), 50);
+					$common_price = PriceDeliveryAction::priceRound(($price < $product->price) === true ? $product->price : $price + rand(5000, 10000), 50);
 					//$product->regular_price + rand(5000, 10000);
                 } else {
-                    logger('bug empty regular_price and state price = NULL', ['prod' => $product, 'state' => $state_data]);
+                    logger('bug empty regular_price and state price = NULL OR Price = NULL', ['prod' => $product, 'state' => $state_data]);
                     continue;
                 }
 
@@ -84,8 +86,11 @@ class ParserService
                 $this->writeLog($state_data, $product->backmarket_id);
 
                 $check_product[$product->post_parent][$product->post_id] = $stock;
-            }
-            $parent = $this->updateProductParent($check_product);
+		//}
+	    }
+	   
+	    if(strcasecmp($product->backmarket_id, '8524e855-08d5-42fb-be73-9b9a0b7b2e61') == 0){
+ 	    $parent = $this->updateProductParent($check_product);
             //  $links_query = implode(' ', $links);
             $query_sale_price = implode(', ', $query_price);
 			$query_common_price = implode(', ', $query_common_price);
@@ -101,6 +106,7 @@ class ParserService
             $this->productRepository->updateStockStatus($product_ids, $query_stat_stock, '_stock');
             //        $productRepository->updateStockStatus($product_ids, $links_query, 'backmarket_url');
             $this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
+	    }
         } catch (\Exception$e) {
             logger('error', [$e]);
         }
