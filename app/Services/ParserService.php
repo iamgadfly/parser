@@ -32,8 +32,6 @@ class ParserService
     {
         try {
             foreach ($products as $product) {
-	//	if(strcasecmp($product->backmarket_id, '8524e855-08d5-42fb-be73-9b9a0b7b2e61') == 0){
-	//	logger('test', [$product]);
 	    if (empty($product->backmarket_id) || is_null($product->backmarket_id) || $product->backmarket_id == '' || is_null($product->state)) {
                     logger('bug_empty_url (backmarket_id)', [$product]);
                     continue;
@@ -89,7 +87,6 @@ class ParserService
 		//}
 	    }
 	   
-	    if(strcasecmp($product->backmarket_id, '8524e855-08d5-42fb-be73-9b9a0b7b2e61') == 0){
  	    $parent = $this->updateProductParent($check_product);
             //  $links_query = implode(' ', $links);
             $query_sale_price = implode(', ', $query_price);
@@ -99,10 +96,10 @@ class ParserService
             $product_ids = implode(', ', $post_ids);
             $parent_ids = implode(', ', array_keys($parent));
             $parent_status = implode(' ', array_values($parent));
-
+	    DB::transaction(function () {
             $this->productRepository->updatePrice($product_ids, $query_sale_price, '_sale_price');
-		    $this->productRepository->updatePrice($product_ids, $query_common_price, '_price');
-			$this->productRepository->updateStockStatus($product_ids, $query_stat, '_stock_status');
+	    $this->productRepository->updatePrice($product_ids, $query_common_price, '_price');
+	    $this->productRepository->updateStockStatus($product_ids, $query_stat, '_stock_status');
             $this->productRepository->updateStockStatus($product_ids, $query_stat_stock, '_stock');
             //        $productRepository->updateStockStatus($product_ids, $links_query, 'backmarket_url');
             $this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
