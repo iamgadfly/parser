@@ -105,14 +105,14 @@ class ParserService
             $query_stat_stock = implode(' ', $query_value);
             $product_ids = implode(', ', $post_ids);
 	    
-		//DB::transaction(function () use ($product_ids, $query_sale_price, $query_common_price, $query_stat, $query_stat_stock) {
+	    DB::transaction(function () use ($product_ids, $query_sale_price, $query_common_price, $query_stat, $query_stat_stock) {
             //$this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
 	    $this->productRepository->updatePrice($product_ids, $query_sale_price, '_sale_price');
 	    $this->productRepository->updatePrice($product_ids, $query_common_price, '_price');
 	    $this->productRepository->updateStockStatus($product_ids, $query_stat, '_stock_status');
             $this->productRepository->updateStockStatus($product_ids, $query_stat_stock, '_stock');
             //        $productRepository->updateStockStatus($product_ids, $links_query, 'backmarket_url');
-        	//});
+            });
         } catch (\Exception$e) {
             logger('error', [$e]);
         }
