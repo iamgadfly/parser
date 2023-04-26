@@ -50,7 +50,7 @@ class ParserService
                     'otlichnoe' => $parsed_data['states'][1] ?? null,
                     'kak-novyj' => $parsed_data['states'][2] ?? null,
 		};
-                if (!is_null($state_data['price']) && !is_null($product->price) && !is_null($product->regular_price) && !is_null($state_data) && isset($state_data['price'])) {
+                if (!is_null($state_data['price']) && !is_null($product->regular_price) && !is_null($state_data) && isset($state_data['price'])) {
                     $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
                     $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
                     if (is_null($delivery)) {
@@ -65,7 +65,7 @@ class ParserService
                     $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) ?? null;
                     $stock = $this->getStock($state_data['in_stock']);
                     $count = $this->getCount($state_data);
-	       	    $common_price = PriceDeliveryAction::priceRound(($price < $product->price) ? $product->price : $price + rand(5000, 10000), 50);
+	       	    $common_price = PriceDeliveryAction::priceRound(($price < $product->regular_price) ? $product->regular_price : $price + rand(5000, 10000), 50);
                 } else if (!is_null($product->regular_price) && is_null($state_data['price']) && !is_null($state_data['price'] && !is_null($product->price))) {
                     $stock = 'outofstock';
                     $count = 0;
@@ -74,13 +74,13 @@ class ParserService
 					//}
 									//$product->regular_price + rand(5000, 10000);
                 } else {
-                    logger('bug empty regular_price and state price = NULL OR Price = NULL', ['prod' => $product, 'state' => $state_data]);
+                    logger('bug empty regular_price and state price = NULL', ['prod' => $product, 'state' => $state_data]);
                     continue;
                 }
 
                 $post_ids[] = $product->post_id;
                 $query_price[] = $price;
-		$query_common_price[] =  !isset($common_price) ? $product->price : $common_price;
+		$query_common_price[] =  !isset($common_price) ? $product->regular_price : $common_price;
                 $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
                 $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
                 if (is_null($state_data)) {
