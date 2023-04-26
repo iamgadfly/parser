@@ -17,12 +17,13 @@ class ParserService
 
     public function parseByLinks(): void
     {
-        $products = $this->productRepository->getAllProducts();
+	$products = $this->productRepository->getAllProducts();
+	$products = collect($products)->unique('post_id')->chunk(50);
         $dollar_course = $this->productRepository->getCourseByName('Доллар');
         $snopfan_course = $this->productRepository->getCourseByName('Shopfans');
+	
 
-        $products_chunked = array_chunk($products, 50);
-        foreach ($products_chunked as $products) {
+        foreach ($products as $products) {
             $this->getDataForProduct($products, $dollar_course, $snopfan_course);
         }
         logger('test_parsing', ['success']);
@@ -40,12 +41,16 @@ class ParserService
                 $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
                 $data_state = $this->getApiBackmarket($product->backmarket_id, false);
                 $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
+		if(is_null($parsed_data['states'])){
+		logger('parse_error / Backmarket return null', ['post_id' => $product->post_id]);
+		continue;
+		}
                 $state_data = match($product->state) {
                     'horoshee' => $parsed_data['states'][0] ?? null,
                     'otlichnoe' => $parsed_data['states'][1] ?? null,
                     'kak-novyj' => $parsed_data['states'][2] ?? null,
-                };
-                if (!is_null($state_data['price']) && !is_null($product->price) && !is_null($product->regular_price)) {
+		};
+                if (!is_null($state_data['price']) && !is_null($product->price) && !is_null($product->regular_price) && !is_null($state_data) && isset($state_data['price'])) {
                     $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
                     $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
                     if (is_null($delivery)) {
@@ -60,14 +65,14 @@ class ParserService
                     $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) ?? null;
                     $stock = $this->getStock($state_data['in_stock']);
                     $count = $this->getCount($state_data);
-                } else if (!is_null($product->regular_price) && is_null($state_data['price']) && isset($product->regular_price) && isset($state_data['price'])) {
+	       	    $common_price = PriceDeliveryAction::priceRound(($price < $product->price) ? $product->price : $price + rand(5000, 10000), 50);
+                } else if (!is_null($product->regular_price) && is_null($state_data['price']) && !is_null($state_data['price'] && !is_null($product->price))) {
                     $stock = 'outofstock';
                     $count = 0;
                     $price = PriceDeliveryAction::priceRound($product->regular_price, 50);
 					//if($price < $product->price){
 					//}
-					$common_price = PriceDeliveryAction::priceRound(($price < $product->price) === true ? $product->price : $price + rand(5000, 10000), 50);
-					//$product->regular_price + rand(5000, 10000);
+									//$product->regular_price + rand(5000, 10000);
                 } else {
                     logger('bug empty regular_price and state price = NULL OR Price = NULL', ['prod' => $product, 'state' => $state_data]);
                     continue;
@@ -75,7 +80,7 @@ class ParserService
 
                 $post_ids[] = $product->post_id;
                 $query_price[] = $price;
-		$query_common_price[] = $common_price ?? $product->price;
+		$query_common_price[] =  !isset($common_price) ? $product->price : $common_price;
                 $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
                 $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
                 if (is_null($state_data)) {
