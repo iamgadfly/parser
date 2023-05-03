@@ -64,8 +64,10 @@ class ParserService
                     }
                     $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) ?? null;
                     $stock = $this->getStock($state_data['in_stock']);
-                    $count = $this->getCount($state_data);
-	       	    $common_price = PriceDeliveryAction::priceRound(($price < $product->regular_price) ? $product->regular_price : $price + rand(5000, 10000), 50);
+		    $count = $this->getCount($state_data);
+		    $change = $product->regular_price - $price;
+	       	    $common_price = PriceDeliveryAction::priceRound(($change > 5000) ? $product->regular_price : $price + rand(5000, 10000), 50);
+
                 } else if (!is_null($product->regular_price) && is_null($state_data['price']) && !is_null($state_data['price'] && !is_null($product->price))) {
                     $stock = 'outofstock';
                     $count = 0;
