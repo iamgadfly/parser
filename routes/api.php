@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/parse', [ParserController::class, 'index']);
+Route::post('/rebag', [ParserController::class, 'rebag']);
 
 // Route::get('/test', function(){
 // dd(DB::table('wp_postmeta')->first());
