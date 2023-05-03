@@ -96,9 +96,9 @@ class RebagService
                         'state'     => ctype_digit($product->metafields[2]->value) ? stristr(trim($raw_data_state[1]), '.', true) : $product->metafields[2]->value,
                         // ?? str_replace('.', '', stristr(trim($raw_data[2]), ' ', true)),
                         // str_replace('.', '', stristr(trim($raw_data[2]), ' ', true)),
-                        'regular_price' => $product->price_min_usd,
+                        'regular_price' => "$product->price_min_usd",
                         'name'      => $product->title,
-						'type' => 	   'product',
+			'type' => 	   'simple',
                         // $product->variants[0]->title,
                         'rebag_id'  => $product->variants[0]->id,
                         'images'    => $product->images,
@@ -114,6 +114,17 @@ class RebagService
 							$images[]['src'] = $image; 
 					}
 					$data['images'] = $images;
+					$data['categories'] = match($data['brand']){
+						'Louis Vuitton' => [['id' => 464], ['id' => 469]],
+					};
+					dd($this->cUrlGetData('https://recommerce-dev.ru/wp-json/wp/v2/posts', json_encode($data), [
+					'Content-Type' => 'application/json',
+					'Authorization' => 'Basic ' . base64_encode('adminDev:dxVQ cHtc cHWC hxa9 FTrt XBAQ'),
+					]));
+					dd(Http::withHeaders([
+						'Content-Type' => 'application/json',
+						'Authorization' => 'Basic ' . base64_encode('admin:DSm!ghqHVhMh*(bkzB'),
+					])->post('https://recommerce-dev.ru/wp-json/wc/v3/products', $data)->body());
 					dd($data);
                     logger('botega_data_test', json_decode($data['images']));
                     // dd(explode(':', $product->body_html));
@@ -132,4 +143,40 @@ class RebagService
         // for ($i = 0; $i < 999; $i++) {
         // }
     }
+    /**
+ * 
+ * @param string $url
+ * @param string|array $post_fields
+ * @param array $headers
+ * @return type
+ */
+public function cUrlGetData($url, $post_fields = null, $headers = null) {
+
+    $ch = curl_init();
+    $timeout = 5;
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    if (!empty($post_fields)) {
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
+    }
+
+    if (!empty($headers))
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    //curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $data = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+
+        echo 'Error:' . curl_error($ch);
+    }
+
+    curl_close($ch);
+    return $data;
+}
 }
