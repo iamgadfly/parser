@@ -55,6 +55,34 @@ class PriceDeliveryAction
         return intval($dollar_course * $raw_price * $agent_comission + (($delivery + ($raw_price - 380) * $customs_comisson) * $dollar_course) * $payment_comisson);
     }
 
+    public static function getPriceLogistic($weight, $raw_price, $dollar_course, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson)
+    {
+	return match(true){
+            $weight == 1 || $weight == 1.5 && $raw_price > 450 => self::getPriceSnopfansLogistic($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson),
+            $weight > 1.5 && $raw_price >= 450 => self::getPriceSnopfansLogistic($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson),
+            $weight >= 1 && $raw_price < 450 && $raw_price > 380 =>  self::getPriceOnexLogisticWithoutcustoms($dollar_course, $raw_price, $delivery, $agent_comission, $payment_comisson, $customs_comisson),
+            $weight >= 1 && $raw_price <= 380 => self::getPriceOnexLogisticWithCustoms($dollar_course, $raw_price, $delivery, $customs_comisson, $agent_comission, $payment_comisson),
+            default => null,
+        };
+    }
+
+public static function getPriceSnopfansLogistic($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson)
+    {
+	return ($delivery + $customs_comisson) * $snopfan_course;
+    }
+
+    public static function getPriceOnexLogisticWithoutcustoms($dollar_course, $raw_price, $delivery, $agent_comission, $payment_comisson, $customs_comisson)
+    {
+	return ($delivery + ($raw_price - 380)) * $dollar_course;
+    }
+
+    public static function getPriceOnexLogisticWithCustoms($dollar_course, $raw_price, $delivery, $agent_comission, $payment_comisson, $customs_comisson)
+    {
+   	return  $delivery * $dollar_course; 
+    }
+
+
+
     public static function getCustomsСommissionsByWeightAndPrice($weight, $raw_price):int | null
     {
         return match(true){
