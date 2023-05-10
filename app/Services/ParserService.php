@@ -67,10 +67,6 @@ class ParserService
 		    $count = $this->getCount($state_data);
 		    $change = $product->regular_price - $price;
 	       	    $common_price = PriceDeliveryAction::priceRound(($change > 5000) ? $product->regular_price : $price + rand(5000, 10000), 50);
-		    $price_usd = "($product->post_id, 'price_usd', " . $state_data['price'] . ")";
-		    dd($product);
-		    dd(PriceDeliveryAction::getPriceLogistic($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson,
-1.1, 1.05));
                 } else if (!is_null($product->regular_price) && is_null($state_data['price']) && !is_null($state_data['price'] && !is_null($product->price))) {
                     $stock = 'outofstock';
                     $count = 0;
@@ -82,10 +78,19 @@ class ParserService
                     logger('bug empty regular_price and state price = NULL', ['prod' => $product, 'state' => $state_data]);
                     continue;
                 }
+		if(!is_null($state_data['price'])){
+		    $price_usd = "($product->post_id, 'price_usd', " . $state_data['price'] . ')';
+		    $price_logistic = "($product->post_id, 'price_logistic', " .  PriceDeliveryAction::getPriceLogistic($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) . ')';
+		}
 
-                $post_ids[] = $product->post_id;
+		if(isset($price_usd)){
+			$query_usd_price[] = $price_usd;
+		}
+		if(isset($price_logistic)){
+			$query_price_logistic[] = $price_logistic;
+		}
+		$post_ids[] = $product->post_id;
                 $query_price[] = $price;
-		$query_usd_price[] = $price_usd;
 		$query_common_price[] =  !isset($common_price) ? $product->regular_price : $common_price;
                 $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
                 $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
@@ -108,13 +113,19 @@ class ParserService
             $query_sale_price = implode(', ', $query_price);
 	    //insertBackMarketUrl
             $query_usd_price = implode(', ', $query_usd_price);
+	    $query_logistic_price = implode(', ', $query_price_logistic);
 	    $query_common_price = implode(', ', $query_common_price);
 	    $query_stat = implode(' ', $query_status);
             $query_stat_stock = implode(' ', $query_value);
             $product_ids = implode(', ', $post_ids);
 	    
-	    DB::transaction(function () use ($product_ids, $query_sale_price, $query_common_price, $query_stat, $query_stat_stock) {
-	    $this->productRepository->insertBackMarketUrl($query_usd_price);
+	    DB::transaction(function () use ($product_ids, $query_sale_price, $query_common_price, $query_stat, $query_stat_stock, $query_usd_price, $query_logistic_price) {
+		    if(isset($query_usd_price)){
+	    		$this->productRepository->insertBackMarketUrl($query_usd_price);
+		    }
+		    if(isset($query_logistic_price)){
+	    		$this->productRepository->insertBackMarketUrl($query_logistic_price);
+		    }
             //$this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
 	    $this->productRepository->updatePrice($product_ids, $query_sale_price, '_sale_price');
 	    $this->productRepository->updatePrice($product_ids, $query_common_price, '_price');
