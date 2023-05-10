@@ -32,45 +32,113 @@ class InsertBrandCommand extends Command
     {
 	$products = $productRepository->getAllProducts();
 	$products = collect($products)->unique('post_parent');
-        foreach ($products as $product) {
+	foreach ($products as $key => $product) {
 		if(is_null($product->backmarket_id)){
 		continue;
 		}
+		//dd($product);
 		$data_state = $parserService->getApiBackmarket($product->backmarket_id, false);
 		if(isset($data_state['trackingDetails']['brand'])){
-			//$brands[] = $data_state['trackingDetails']['brand'];
-			//$parent_ids[] = $product->post_parent;
-			//$product->post_parent
-			$atrributes = DB::table('wp_postmeta')->where('post_id', 9318)->where('meta_key', '_product_attributes')->first();
-			$update_data = unserialize($atrributes->meta_value);
-			$data = array_merge($update_data, [ 
-			    [
-				'name' => 'brand',    
-				'id' => '37',
-        			'position' => 0,
-	        		'variation' => false,
-		        	'options' => array($data_state['trackingDetails']['brand']),
-  	   		    ]
-			]
-			);
-			$data['brand'] = $data[0];
-			unset($data[0]);
-//			dd($data);
-			dd(self::curl($product->post_parent, $data));
-			//'brand' => $data_state['trackingDetails']['brand'],
-			
-			//DB::table('wp_posts')->where('ID', $product->post_parent)->update([
-			//	'brand' => $data_state['trackingDetails']['brand'],
-		//	]);
+
+$url = "https://recommerce-dev.ru/wp-json/wc/v3/products/$product->post_parent";
+
+//$consumer_key = 'ck_6cd3d2320dd9e8ccb52efda34fdc134ce17f58b9';
+//$consumer_secret = 'cs_82799b312141fab490feed182974eda91b587b0e';
+
+$consumer_key = 'ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70';
+$consumer_secret = 'cs_90575e933df47298b06da8156007da72b120e7d8';
+
+$headers = array(
+    'Authorization' => 'Basic ' . base64_encode($consumer_key.':'.$consumer_secret )
+);
+
+// получаем текущие атрибуты
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, $url);
+
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+
+curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+//curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+//for debug only!
+curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_USERPWD, "$consumer_key:$consumer_secret");
+$resp = curl_exec($curl);
+$status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+curl_close($curl);
+
+$resp_data = json_decode($resp, true);
+
+// получаем текущие атрибуты
+$attributes['attributes'] = $resp_data['attributes'];
+
+$brand = [
+    'id' => '37', // id атрибута бренда в админке
+    'position' => 0,
+    'variation' => false,
+    'options' => $data_state['trackingDetails']['brand'],
+];
+
+// добавляем бренд
+array_push($attributes['attributes'], $brand);
+
+// обновляем товар с вставкой бренда и других атрибутов
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, $url);
+
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT"); //обновляем
+
+curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+// готовим данные атрибутов
+curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($attributes));
+
+//for debug only!
+curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_USERPWD, "$consumer_key:$consumer_secret");
+$resp = curl_exec($curl);
+$status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+curl_close($curl);
 		}
         }
 	dd('успешно');
+    }
+    
+    public static function getAtributes($product_id)
+    {
+	    $headers = array(
+    'Authorization' => 'Basic ' . base64_encode('ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70'.':'. 'cs_90575e933df47298b06da8156007da72b120e7d8')
+	    );
+
+	$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, "https://recommerce-dev.ru/wp-json/wc/v3/products/$product_id",
+);
+
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+
+curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+//curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+//for debug only!
+curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_USERPWD, "ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70:cs_90575e933df47298b06da8156007da72b120e7d8");
+$resp = curl_exec($curl);
+$status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+curl_close($curl);
+return json_decode($resp, true);
+
     }
     public static function curl($id, $data)
     {
     	$curl = curl_init();
 	curl_setopt_array($curl, array(
-	CURLOPT_URL => "https://recommerce-dev.ru/wp-json/wc/v3/products/$id?consumer_key=ck_6d4c35ca173023bbbc1a48bd17e7b54d96e995b3&consumer_secret=cs_22bfcdefeb71ac4d0ad36668de5ef65c958bdb05",
+	CURLOPT_URL => "https://recommerce-dev.ru/wp-json/wc/v3/products/$id?consumer_key=ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70&consumer_secret=cs_90575e933df47298b06da8156007da72b120e7d8",
 	CURLOPT_RETURNTRANSFER => true,
 	CURLOPT_ENCODING => '',
 	CURLOPT_MAXREDIRS => 10,
