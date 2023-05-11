@@ -64,6 +64,9 @@ class RebagService
 	//$jwt_token = $this->authToken();
         $fp = fopen(Storage::path('bottega.log'), 'a');
         $i = 1;
+	$atributes = collect(json_decode(Http::get(env('WP_URL') . '/wp-json/wc/v3/products/attributes?consumer_key=' . env('WP_KEY') . '&' . 'consumer_secret=' . env('WP_SECRET'))));		
+	$wp_aitributes = $atributes->whereIn('name', ['Цвет', 'Состояние', 'Размер', 'Бренд'])->pluck('id', 'slug');
+		//dd($wp_aitributes);
         do {
             $check = Http::get("https://api.rebag.com/api/v6/shop/product/?collection_scope=0&page=$i&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Louis%20Vuitton&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500");
             $parsed = json_decode($check);
@@ -83,17 +86,9 @@ class RebagService
                         $sizes[preg_replace('/[^a-zA-Z]/', '', $size)] = preg_replace("/[^,.0-9-]/", '', $size);
                     }
 
-                    // $meterial = explode('Material:', $product->body_html)[1];
-                    // dd($meterial);
-
                     // $desc = stristr(trim($raw_data_desc[1]), 'Interior Color:', true);
-
-                    // $state = stristr('.', $raw_data[2], true);
-                    // $state = substr(strpos($raw_data[2], "."), 0, 1);
-                    // $state = substr(strpos($raw_data[2], '.'), 1, strlen($raw_data[2]));
-                    // dd($state);
                     $data = [
-                        'state'     => ctype_digit($product->metafields[2]->value) ? stristr(trim($raw_data_state[1]), '.', true) : $product->metafields[2]->value,
+                        'state'     => stristr(trim($raw_data_state[1]), '.', true) ,
                         // ?? str_replace('.', '', stristr(trim($raw_data[2]), ' ', true)),
                         // str_replace('.', '', stristr(trim($raw_data[2]), ' ', true)),
                         'regular_price' => "$product->price_min_usd",
@@ -107,7 +102,7 @@ class RebagService
                         'dimensions'     => array_change_key_case($sizes),
                         'materials' => $materials,
                         // 'desc'      => trim($desc),
-                    ];
+		    ];
 					$translate_data = $this->translateService->translate([$data['color'], array_values($data['materials'])]);
 					$data = array_replace($data, $translate_data);
 					foreach($data['images'] as $image){
@@ -117,11 +112,16 @@ class RebagService
 					$data['categories'] = match($data['brand']){
 						'Louis Vuitton' => [['id' => 464], ['id' => 469]],
 					};
-					//dd($data);
+					dd($data);
+		    //$atr = Http::get(env('WP_URL') . '/wp-json/wc/v3/products/attributes?consumer_secret=' . env('WP_KEY') . '&' . env('WP_SECRET')); 
+		    //dd(env('WP_SECRET'));
+		    //dd(json_decode($atr));			
+
+		    //dd($this->curl(env('WP_URL') . '/wp-json/wc/v3/products/attributes?consumer_key=' . env('WP_KEY') . '&' . 'consumer_secret=' . env('WP_SECRET') ));
 		    $wp_product = $this->createProductWP($data);
 		    dd($wp_product);
                     logger('botega_data_test', json_decode($data['images']));
-                }
+		}
             }
             return 322;
             $i++;
@@ -130,11 +130,37 @@ class RebagService
         fclose($fp);
         return 322;
     }
+
+    public function curl($url, $data = [null])
+    {
+	$headers = [
+     		'Authorization' => 'Basic ' . base64_encode(env('WP_KEY').':'. env('WP_SECRET'))
+	];
+
+	    $consumer_key = env('WP_KEY');
+	    $consumer_secret = env('WP_SECRET');
+    $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, $url);
+
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+
+curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+//for debug only!
+curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_USERPWD, "$consumer_key:$consumer_secret");
+$resp = curl_exec($curl);
+$status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+curl_close($curl);
+return  json_decode($resp, true);
+    }
     
 public function createProductWP($data) {
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
-CURLOPT_URL => 'https://recommerce-dev.ru/wp-json/wc/v3/products?consumer_key=ck_6d4c35ca173023bbbc1a48bd17e7b54d96e995b3&consumer_secret=cs_22bfcdefeb71ac4d0ad36668de5ef65c958bdb05',
+CURLOPT_URL => env('WP_URL') . '/wp-json/wc/v3/products?consumer_key=ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70&consumer_secret=cs_90575e933df47298b06da8156007da72b120e7d8',
 CURLOPT_RETURNTRANSFER => true,
 CURLOPT_ENCODING => '',
 CURLOPT_MAXREDIRS => 10,
@@ -152,4 +178,30 @@ CURLOPT_HTTPHEADER => array(
 	    curl_close($curl);
 	    return json_decode($response);
 }
+
+public function getAtributes()
+{
+	$curl = curl_init();
+	curl_setopt_array($curl, array(
+CURLOPT_URL => env('WP_URL') . '/wp-json/wc/v3/attributes?consumer_key=ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70&consumer_secret=cs_90575e933df47298b06da8156007da72b120e7d8',
+CURLOPT_RETURNTRANSFER => true,
+CURLOPT_ENCODING => '',
+CURLOPT_MAXREDIRS => 10,
+CURLOPT_TIMEOUT => 0,
+CURLOPT_FOLLOWLOCATION => true,
+CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+CURLOPT_CUSTOMREQUEST => 'POST',
+CURLOPT_POSTFIELDS => json_encode($data),
+CURLOPT_HTTPHEADER => array(
+    'Content-Type: application/json'
+),
+));
+	    $response = curl_exec($curl);
+
+	    curl_close($curl);
+	    return json_decode($response);
+
+
+}
+
 }
