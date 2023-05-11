@@ -88,12 +88,17 @@ class RebagService
 
                     // $desc = stristr(trim($raw_data_desc[1]), 'Interior Color:', true);
                     $data = [
-                        'state'     => stristr(trim($raw_data_state[1]), '.', true) ,
+			    'state'     => match(stristr(trim($raw_data_state[1]), '.', true)){
+		    		'Pristine', 'Excellent'	=>  'kak-novyj', 
+				'Great', 'Very good' => 'otlichnoe',
+				'Good', 'Fair' => 'horoshee',		
+				default => '-',
+		    },
                         // ?? str_replace('.', '', stristr(trim($raw_data[2]), ' ', true)),
                         // str_replace('.', '', stristr(trim($raw_data[2]), ' ', true)),
                         'regular_price' => "$product->price_min_usd",
                         'name'      => $product->title,
-			'product_type' => 	   'simple',
+			'product_type' => 	   'product', // simple
                         // $product->variants[0]->title,
                         'rebag_id'  => $product->variants[0]->id,
                         'images'    => $product->images,
@@ -106,21 +111,26 @@ class RebagService
 					$translate_data = $this->translateService->translate([$data['color'], array_values($data['materials'])]);
 					$data = array_replace($data, $translate_data);
 					foreach($data['images'] as $image){
-							$images[]['src'] = $image; 
+						$images[]['src'] = $image; 
 					}
 					$data['images'] = $images;
 					$data['categories'] = match($data['brand']){
 						'Louis Vuitton' => [['id' => 464], ['id' => 469]],
 					};
-					dd($data);
+					if($data['state'] == '-'){
+						dd(stristr(trim($raw_data_state[1]), '.', true));
+					}
+		    dd($data);
+
 		    //$atr = Http::get(env('WP_URL') . '/wp-json/wc/v3/products/attributes?consumer_secret=' . env('WP_KEY') . '&' . env('WP_SECRET')); 
 		    //dd(env('WP_SECRET'));
 		    //dd(json_decode($atr));			
 
 		    //dd($this->curl(env('WP_URL') . '/wp-json/wc/v3/products/attributes?consumer_key=' . env('WP_KEY') . '&' . 'consumer_secret=' . env('WP_SECRET') ));
-		    $wp_product = $this->createProductWP($data);
-		    dd($wp_product);
-                    logger('botega_data_test', json_decode($data['images']));
+			
+		    //$wp_product = $this->createProductWP($data);
+		   // dd($wp_product);
+                    //logger('test_data', $data);
 		}
             }
             return 322;
