@@ -17,11 +17,10 @@ class ParserService
 
     public function parseByLinks(): void
     {
-	$products = $this->productRepository->getAllProducts();
-	$products = collect($products)->unique('post_id')->chunk(50);
+        $products = $this->productRepository->getAllProducts();
+        $products = collect($products)->unique('post_id')->chunk(50);
         $dollar_course = $this->productRepository->getCourseByName('Доллар');
         $snopfan_course = $this->productRepository->getCourseByName('Shopfans');
-	
 
         foreach ($products as $products) {
             $this->getDataForProduct($products, $dollar_course, $snopfan_course);
@@ -32,8 +31,8 @@ class ParserService
     public function getDataForProduct($products, $dollar_course, $snopfan_course)
     {
         try {
-	    foreach ($products as $product) {
-	    if (empty($product->backmarket_id) || is_null($product->backmarket_id) || $product->backmarket_id == '' || is_null($product->state)) {
+            foreach ($products as $product) {
+                if (empty($product->backmarket_id) || is_null($product->backmarket_id) || $product->backmarket_id == '' || is_null($product->state)) {
                     logger('bug_empty_url (backmarket_id)', [$product]);
                     continue;
                 }
@@ -41,15 +40,15 @@ class ParserService
                 $product_parsed_data_state = $this->getDataState($this->getApiBackmarket($product->backmarket_id));
                 $data_state = $this->getApiBackmarket($product->backmarket_id, false);
                 $parsed_data = $this->getDataFromParsedData($product, $data_state, $product_parsed_data_state);
-		if(is_null($parsed_data['states'])){
-		logger('parse_error / Backmarket return null', ['post_id' => $product->post_id]);
-		continue;
-		}
-                $state_data = match($product->state) {
+                if (is_null($parsed_data['states'])) {
+                    logger('parse_error / Backmarket return null', ['post_id' => $product->post_id]);
+                    continue;
+                }
+                $state_data = match ($product->state) {
                     'horoshee' => $parsed_data['states'][0] ?? null,
                     'otlichnoe' => $parsed_data['states'][1] ?? null,
                     'kak-novyj' => $parsed_data['states'][2] ?? null,
-		};
+                };
                 if (!is_null($state_data['price']) && !is_null($product->regular_price) && !is_null($state_data) && isset($state_data['price'])) {
                     $weight = PriceDeliveryAction::getWeightByCategory($product->product_category);
                     $delivery = PriceDeliveryAction::getDeliveryByWeightAndPrice($weight, $state_data['price']) ?? null;
@@ -64,34 +63,30 @@ class ParserService
                     }
                     $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) ?? null;
                     $stock = $this->getStock($state_data['in_stock']);
-		    $count = $this->getCount($state_data);
-		    $change = $product->regular_price - $price;
-	       	    $common_price = PriceDeliveryAction::priceRound(($change > 5000) ? $product->regular_price : $price + rand(5000, 10000), 50);
+                    $count = $this->getCount($state_data);
+                    $change = $product->regular_price - $price;
+                    $common_price = PriceDeliveryAction::priceRound(($change > 5000) ? $product->regular_price : $price + rand(5000, 10000), 50);
                 } else if (!is_null($product->regular_price) && is_null($state_data['price']) && !is_null($state_data['price'] && !is_null($product->price))) {
                     $stock = 'outofstock';
                     $count = 0;
                     $price = PriceDeliveryAction::priceRound($product->regular_price, 50);
-					//if($price < $product->price){
-					//}
-									//$product->regular_price + rand(5000, 10000);
+                    //if($price < $product->price){
+                    //}
+                    //$product->regular_price + rand(5000, 10000);
                 } else {
                     logger('bug empty regular_price and state price = NULL', ['prod' => $product, 'state' => $state_data]);
                     continue;
                 }
-		if(!is_null($state_data['price'])){
-		    $price_usd = "($product->post_id, 'price_usd', " . $state_data['price'] . ')';
-		    $price_logistic = "($product->post_id, 'price_logistic', " .  PriceDeliveryAction::getPriceLogistic($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) . ')';
-		}
+                if (!is_null($state_data['price'])) {
+                    $price_usd = "($product->post_id, 'price_usd', " . $state_data['price'] . ')';
+                    $price_logistic = "($product->post_id, 'price_logistic', " . PriceDeliveryAction::getPriceLogistic($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) . ')';
+                }
 
-		if(isset($price_usd)){
-			$query_usd_price[] = $price_usd;
-		}
-		if(isset($price_logistic)){
-			$query_price_logistic[] = $price_logistic;
-		}
-		$post_ids[] = $product->post_id;
+                $query_usd_price[] = $price_usd;
+                $query_price_logistic[] = $price_logistic;
+                $post_ids[] = $product->post_id;
                 $query_price[] = $price;
-		$query_common_price[] =  !isset($common_price) ? $product->regular_price : $common_price;
+                $query_common_price[] = !isset($common_price) ? $product->regular_price : $common_price;
                 $query_status[] = "WHEN post_id = $product->post_id THEN '$stock'";
                 $query_value[] = "WHEN post_id = $product->post_id THEN '$count'";
                 if (is_null($state_data)) {
@@ -100,40 +95,40 @@ class ParserService
                 $this->writeLog($state_data, $product->backmarket_id);
 
                 $check_product[$product->post_parent][$product->post_id] = $stock;
-		//}
-	    }
-	    if(!empty($parent)){
-	    $parent = $this->updateProductParent($check_product);
-	    $parent_status = implode(' ', array_values($parent));	  
-	    $parent_ids = implode(', ', array_keys($parent));
+                //}
+            }
+            if (!empty($parent)) {
+                $parent = $this->updateProductParent($check_product);
+                $parent_status = implode(' ', array_values($parent));
+                $parent_ids = implode(', ', array_keys($parent));
 
-	    $this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
-	    }
-	    	    //  $links_query = implode(' ', $links);
+                $this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
+            }
+            //  $links_query = implode(' ', $links);
             $query_sale_price = implode(', ', $query_price);
-	    //insertBackMarketUrl
+            //insertBackMarketUrl
             $query_usd_price = implode(', ', $query_usd_price);
-	    $query_logistic_price = implode(', ', $query_price_logistic);
-	    $query_common_price = implode(', ', $query_common_price);
-	    $query_stat = implode(' ', $query_status);
+            $query_logistic_price = implode(', ', $query_price_logistic);
+            $query_common_price = implode(', ', $query_common_price);
+            $query_stat = implode(' ', $query_status);
             $query_stat_stock = implode(' ', $query_value);
             $product_ids = implode(', ', $post_ids);
-	    
-	    DB::transaction(function () use ($product_ids, $query_sale_price, $query_common_price, $query_stat, $query_stat_stock, $query_usd_price, $query_logistic_price) {
-		    if(isset($query_usd_price)){
-	    		$this->productRepository->insertBackMarketUrl($query_usd_price);
-		    }
-		    if(isset($query_logistic_price)){
-	    		$this->productRepository->insertBackMarketUrl($query_logistic_price);
-		    }
-            //$this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
-	    $this->productRepository->updatePrice($product_ids, $query_sale_price, '_sale_price');
-	    $this->productRepository->updatePrice($product_ids, $query_common_price, '_price');
-	    $this->productRepository->updateStockStatus($product_ids, $query_stat, '_stock_status');
-            $this->productRepository->updateStockStatus($product_ids, $query_stat_stock, '_stock');
-            //        $productRepository->updateStockStatus($product_ids, $links_query, 'backmarket_url');
+
+            DB::transaction(function () use ($product_ids, $query_sale_price, $query_common_price, $query_stat, $query_stat_stock, $query_usd_price, $query_logistic_price) {
+                if (isset($query_usd_price)) {
+                    $this->productRepository->insertBackMarketUrl($query_usd_price);
+                }
+                if (isset($query_logistic_price)) {
+                    $this->productRepository->insertBackMarketUrl($query_logistic_price);
+                }
+                //$this->productRepository->updateStockStatus($parent_ids, $parent_status, '_stock_status');
+                $this->productRepository->updatePrice($product_ids, $query_sale_price, '_sale_price');
+                $this->productRepository->updatePrice($product_ids, $query_common_price, '_price');
+                $this->productRepository->updateStockStatus($product_ids, $query_stat, '_stock_status');
+                $this->productRepository->updateStockStatus($product_ids, $query_stat_stock, '_stock');
+                //        $productRepository->updateStockStatus($product_ids, $links_query, 'backmarket_url');
             });
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             logger('error', [$e]);
         }
     }
@@ -147,7 +142,7 @@ class ParserService
         $product = $productRepository->getOneProduct($product_id);
         $product = $product[0] ?? null;
         $product_state = substr($product->post_name, strrpos($product->post_name, '-') + 1);
-        $state_data = match($product_state) {
+        $state_data = match ($product_state) {
             'horoshee' => $parsed_data['states'][0],
             'otlichnoe' => $parsed_data['states'][1],
             'kak-novyj' => $parsed_data['states'][2],
@@ -197,7 +192,7 @@ class ParserService
 
     public function getState($sost, $parsed_data): array
     {
-        return match($sost) {
+        return match ($sost) {
             'horoshee' => $parsed_data['states'][0],
             'otlichnoe' => $parsed_data['states'][1],
             'kak-novyj' => $parsed_data['states'][2],
@@ -206,7 +201,7 @@ class ParserService
 
     public function getStock($stock)
     {
-        return match($stock) {
+        return match ($stock) {
             true => 'outofstock',
             false => 'instock',
         };
@@ -226,7 +221,7 @@ class ParserService
 
     public function getApiBackMarket(string $product_id, bool $is_state = true): array | false
     {
-        $url = match($is_state) {
+        $url = match ($is_state) {
             true => "https://www.backmarket.com/bm/product/$product_id/v3/best_offers",
             false => "https://www.backmarket.com/bm/product/v2/$product_id",
         };
