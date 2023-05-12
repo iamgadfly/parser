@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(RebagService::class, function () {
-            return new RebagService(new TranslateService());
+            return new RebagService(new TranslateService(), new ProductRepository());
         });
 
         $this->app->bind(ProductRepository::class, function () {
