@@ -6,6 +6,7 @@ use App\Repositories\ProductRepository;
 use App\Services\TranslateService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use App\Actions\PriceDeliveryRebagAction;
 
 class RebagService
 {
@@ -66,8 +67,11 @@ class RebagService
         //$jwt_token = $this->authToken();
         $fp = fopen(Storage::path('bottega.log'), 'a');
         $i = 1;
-        $atributes = collect(json_decode(Http::get(env('WP_URL') . '/wp-json/wc/v3/products/attributes?consumer_key=' . env('WP_KEY') . '&' . 'consumer_secret=' . env('WP_SECRET'))));
+        $atributes = collect(json_decode(Http::get(env('WP_URL', 'https://recommerce-dev.ru/') . '/wp-json/wc/v3/products/attributes?consumer_key=' . env('WP_KEY', 'ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70') . '&' . 'consumer_secret=' . env('WP_SECRET', 'cs_90575e933df47298b06da8156007da72b120e7d8'))));
         $wp_aitributes = $atributes->whereIn('name', ['Цвет', 'Состояние', 'Размер', 'Бренд'])->pluck('id', 'slug');
+$categories = collect(json_decode(Http::get(env('WP_URL', 'https://recommerce-dev.ru/') . '/wp-json/wc/v3/products/categories?per_page=30&consumer_key=' . env('WP_KEY', 'ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70') . '&' . 'consumer_secret=' . env('WP_SECRET', 'cs_90575e933df47298b06da8156007da72b120e7d8'))));
+	$wp_categories = $categories->whereIn('slug', ['sumki', 'louis-vuitton', 'chanel', 'chloe', 'balenciaga', 'bottega'])->pluck('id', 'slug');
+	//dd($wp_categories);
         $dollar_course = $this->productRepository->getCourseByName('Доллар');
         do {
             $check = Http::get("https://api.rebag.com/api/v6/shop/product/?collection_scope=0&page=$i&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Louis%20Vuitton&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500");
@@ -89,13 +93,8 @@ class RebagService
 
                     // $desc = stristr(trim($raw_data_desc[1]), 'Interior Color:', true);
                     $create_data = [
-                        'state'         => match (stristr(trim($raw_data_state[1]), '.', true)) {
-                            'Pristine', 'Excellent' => 'kak-novyj',
-                            'Great', 'Very good'    => 'otlichnoe',
-                            'Good', 'Fair'          => 'horoshee',
-                            default         => '-',
-                        },
-                        'regular_price' => "$product->price_min_usd",
+		        'state'         => $this->getState(stristr(trim($raw_data_state[1]), '.', true)), 
+                        'regular_price' => PriceDeliveryRebagAction::priceCalculate($product->price_min_usd, $dollar_course),
                         'name'          => $product->title,
                         'product_type'  => 'product', // simple
                         // $product->variants[0]->title,
@@ -113,12 +112,17 @@ class RebagService
                         $images[]['src'] = $image;
                     }
                     $create_data['images'] = $images;
-                    $create_data['categories'] = match ($create_data['brand']) {
-                        'Louis Vuitton' => [['id' => 464], ['id' => 469]],
-                    };
-                    if ($create_data['state'] == '-') {
-                        dd(stristr(trim($raw_data_state[1]), '.', true));
-                    }
+		    $create_data['categories'] = [
+			    ['id' => $wp_categories['sumki']], 
+			    ['id' => $create_data['brand'] == 'Louis Vuitton' ? $wp_categories['louis-vuitton'] : $wp_categories[mb_strtolower($create_data['brand'])]],
+		    ];
+			   // match ($create_data['brand']) {
+		    //'Louis Vuitton' => $wp_categories->where('name', )
+                   // };
+                  //  if ($create_data['state'] == '-') {
+		    
+			    //dd(stristr(trim($raw_data_state[1]), '.', true));
+                    //}
                     dd($create_data);
 
                     //$wp_product = $this->createProductWP($data);
@@ -207,5 +211,13 @@ class RebagService
         return json_decode($response);
 
     }
-
+    public function getState($state)
+    {
+	    return match ($state) {
+                            'Pristine', 'Excellent' => 'kak-novyj',
+                            'Great', 'Very good'    => 'otlichnoe',
+                            'Good', 'Fair'          => 'horoshee',
+                            default         => '-',
+        	};
+	}
 }
