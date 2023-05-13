@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Actions\PriceDeliveryAction;
+use App\Enums\Constants;
+use App\Enums\CourseNames;
 use App\Repositories\ProductRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -18,11 +20,11 @@ class ParserService
     public function parseByLinks(): void
     {
         $products = $this->productRepository->getAllProducts();
-        $products = collect($products)->unique('post_id')->chunk(50);
-        $dollar_course = $this->productRepository->getCourseByName('Доллар');
-        $snopfan_course = $this->productRepository->getCourseByName('Shopfans');
+        $productsChunks = collect($products)->unique('post_id')->chunk(50);
+        $dollar_course = $this->productRepository->getCourseByName(CourseNames::DOLLAR);
+        $snopfan_course = $this->productRepository->getCourseByName(CourseNames::SHOPFANS);
 
-        foreach ($products as $products) {
+        foreach ($productsChunks as $products) {
             $this->getDataForProduct($products, $dollar_course, $snopfan_course);
         }
         logger('test_parsing', ['success']);
@@ -56,12 +58,12 @@ class ParserService
                         logger('bug', ['weight' => $weight, 'price' => $state_data['price'], 'product' => $product]);
                         continue;
                     }
-                    $customs_comisson = PriceDeliveryAction::getCustomsСommissionsByWeightAndPrice($weight, $state_data['price']);
+                    $customs_comisson = PriceDeliveryAction::getCustomsCommissionsByWeightAndPrice($weight, $state_data['price']);
                     if (is_null($customs_comisson)) {
                         logger('bug customs_comisson cant be null', ['weight' => $weight, 'price' => $state_data['price']]);
                         continue;
                     }
-                    $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) ?? null;
+                    $price = PriceDeliveryAction::priceCalculate($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, Constants::AGENT_COMMISSION, Constants::PAYMENT_COMMISSION) ?? null;
                     $stock = $this->getStock($state_data['in_stock']);
                     $count = $this->getCount($state_data);
                     $change = $product->regular_price - $price;
@@ -79,7 +81,7 @@ class ParserService
                 }
                 if (!is_null($state_data['price'])) {
                     $price_usd = "($product->post_id, 'price_usd', " . $state_data['price'] . ')';
-                    $price_logistic = "($product->post_id, 'price_logistic', " . PriceDeliveryAction::getPriceLogistic($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05) . ')';
+                    $price_logistic = "($product->post_id, 'price_logistic', " . PriceDeliveryAction::getPriceLogistic($weight, $state_data['price'], $dollar_course, $delivery, $snopfan_course, $customs_comisson,Constants::PAYMENT_COMMISSION) . ')';
                 }
 
                 $query_usd_price[] = $price_usd;
