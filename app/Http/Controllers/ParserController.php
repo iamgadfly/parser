@@ -2,15 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\PriceDeliveryAction;
-use App\Repositories\ProductRepository;
 use App\Services\ParserService;
-use Carbon\Carbon;
+use App\Services\RebagService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class ParserController extends Controller
 {
@@ -21,6 +15,11 @@ class ParserController extends Controller
 
     public static function parseByOneId(Request $request, ParserService $parserService, $product_id, $is_command = true)
     {
-       return $parserService->parseByLink($request->product_id);
+        return $parserService->parseByLink($request->product_id);
+    }
+
+    public static function rebag(Request $request, RebagService $rebagService)
+    {
+        return $rebagService->index($request->collect());
     }
 }

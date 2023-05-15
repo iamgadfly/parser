@@ -32,12 +32,13 @@ class PriceDeliveryAction
     public static function priceCalculate($weight, $raw_price, $dollar_course, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson): int
     {
         $price = match (true) {
-            ($weight == 1 || $weight == 1.5) && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson),
+            $weight == 1 || $weight == 1.5 && $raw_price > 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson),
             $weight > 1.5 && $raw_price >= 450 => self::getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson),
             $weight >= 1 && $raw_price < 450 && $raw_price > 380 => self::getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, $agent_comission, $payment_comisson, $customs_comisson),
             $weight >= 1 && $raw_price <= 380 => self::getPriceOnexDeliveryWithCustoms($dollar_course, $raw_price, $delivery, $customs_comisson, $agent_comission, $payment_comisson),
             default => null,
         };
+      
         return self::priceRound($price, 50);
     }
 
@@ -85,7 +86,7 @@ class PriceDeliveryAction
     public static function getCustomsCommissionsByWeightAndPrice($weight, $raw_price): int | null
     {
         return match (true) {
-            ($weight == 1 || $weight == 1.5) && $raw_price >= 450 => 3,
+            $weight == 1 || $weight == 1.5 && $raw_price >= 450 => 3,
             $weight > 1.5 && $raw_price >= 450 => 5,
             $weight >= 1 && $raw_price <= 450 && $raw_price >= 380 => 0.15,
             $weight >= 1 && $raw_price <= 380 => 0.15,
