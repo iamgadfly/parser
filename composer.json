@@ -5,7 +5,8 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0.2",
+        "php": "^8.0.2",
+        "doctrine/dbal": "^3.6",
         "guzzlehttp/guzzle": "*",
         "iksaku/laravel-mass-update": "^1.0",
         "laravel/framework": "^9.19",
