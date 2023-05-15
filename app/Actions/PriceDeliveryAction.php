@@ -2,6 +2,8 @@
 
 namespace App\Actions;
 
+use App\Enums\CourseNames;
+use App\Enums\Deliveries;
 use Illuminate\Support\Facades\DB;
 
 class PriceDeliveryAction
@@ -21,8 +23,8 @@ class PriceDeliveryAction
         $weight = self::getWeightByCategory($category->slug);
         $delivery = self::getDeliveryByWeightAndPrice($weight, $raw_price);
 
-        $snopfan_course = DB::table('courses')->where('name', 'Shopfans')->first()->price;
-        $dollar_course = DB::table('courses')->where('name', 'Доллар')->first()->price;
+        $snopfan_course = DB::table('courses')->where('name', CourseNames::SHOPFANS)->first()->price;
+        $dollar_course = DB::table('courses')->where('name', CourseNames::DOLLAR)->first()->price;
         $customs_comisson = self::getDeliveryByWeightAndPrice($weight, $raw_price);
         return intval(self::priceCalculate($weight, $raw_price, $dollar_course, $delivery, $snopfan_course, $customs_comisson, 1.1, 1.05));
     }
@@ -36,26 +38,52 @@ class PriceDeliveryAction
             $weight >= 1 && $raw_price <= 380 => self::getPriceOnexDeliveryWithCustoms($dollar_course, $raw_price, $delivery, $customs_comisson, $agent_comission, $payment_comisson),
             default => null,
         };
-        return $price;
-        // return self::priceRound($price, 50);
+      
+        return self::priceRound($price, 50);
     }
 
     public static function getPriceSnopfansDelivery($dollar_course, $raw_price, $delivery, $snopfan_course, $customs_comisson, $agent_comission, $payment_comisson)
     {
-        return intval($dollar_course * ($raw_price * $agent_comission) + ($delivery + $customs_comisson) * $snopfan_course * $payment_comisson);
+        return round($dollar_course * ($raw_price * $agent_comission) + ($delivery + $customs_comisson) * $snopfan_course * $payment_comisson);
     }
 
     public static function getPriceOnexDeliveryWithCustoms($dollar_course, $raw_price, $delivery, $customs_comisson, $agent_comission, $payment_comisson)
     {
-        return intval($dollar_course * ($raw_price * $agent_comission) + $delivery * $dollar_course * $payment_comisson);
+        return round($dollar_course * ($raw_price * $agent_comission) + $delivery * $dollar_course * $payment_comisson);
     }
 
     public static function getPriceOnexDeliveryWithoutCustoms($dollar_course, $raw_price, $delivery, $agent_comission, $payment_comisson, $customs_comisson)
     {
-        return intval($dollar_course * $raw_price * $agent_comission + (($delivery + ($raw_price - 380) * $customs_comisson) * $dollar_course) * $payment_comisson);
+        return round($dollar_course * $raw_price * $agent_comission + (($delivery + ($raw_price - 380) * $customs_comisson) * $dollar_course) * $payment_comisson);
     }
 
-    public static function getCustomsСommissionsByWeightAndPrice($weight, $raw_price): int | null
+    public static function getPriceLogistic($weight, $raw_price, $dollar_course, $delivery, $snopfan_course, $customs_comisson, $payment_comisson)
+    {
+        return match (true) {
+            ($weight == 1 || $weight == 1.5) && $raw_price > 450 => self::getPriceSnopfansLogistic($delivery, $snopfan_course, $customs_comisson, $payment_comisson),
+            $weight > 1.5 && $raw_price >= 450 => self::getPriceSnopfansLogistic($delivery, $snopfan_course, $customs_comisson, $payment_comisson),
+            $weight >= 1 && $raw_price < 450 && $raw_price > 380 => self::getPriceOnexLogisticWithoutcustoms($dollar_course, $raw_price, $delivery, $payment_comisson, $customs_comisson),
+            $weight >= 1 && $raw_price <= 380 => self::getPriceOnexLogisticWithCustoms($dollar_course, $delivery, $payment_comisson, $customs_comisson),
+            default => null,
+        };
+    }
+
+    public static function getPriceSnopfansLogistic($delivery, $snopfan_course, $customs_comisson, $payment_comisson)
+    {
+        return round(($delivery + $customs_comisson) * $snopfan_course * $payment_comisson);
+    }
+
+    public static function getPriceOnexLogisticWithoutcustoms($dollar_course, $raw_price, $delivery, $payment_comisson, $customs_comisson)
+    {
+        return round((($delivery + ($raw_price - 380) * $customs_comisson) * $dollar_course) * $payment_comisson);
+    }
+
+    public static function getPriceOnexLogisticWithCustoms($dollar_course, $delivery, $payment_comisson, $customs_comisson)
+    {
+        return round(($delivery + $customs_comisson) * $dollar_course * $payment_comisson);
+    }
+
+    public static function getCustomsCommissionsByWeightAndPrice($weight, $raw_price): int | null
     {
         return match (true) {
             $weight == 1 || $weight == 1.5 && $raw_price >= 450 => 3,
@@ -69,15 +97,15 @@ class PriceDeliveryAction
     public static function getDeliveryByWeightAndPrice($weight, $raw_price)
     {
         return match (true) {
-            $weight == 1 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
-            $weight == 1.5 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
-            $weight == 3.5 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
-            $weight == 15 && $raw_price > 450 => self::getDelivery($weight, 'Shopfans'),
-            default => self::getDelivery($weight, 'Onex'),
+            $weight == 1 && $raw_price > 450 => self::getDelivery($weight, Deliveries::Shopfans),
+            $weight == 1.5 && $raw_price > 450 => self::getDelivery($weight, Deliveries::Shopfans),
+            $weight == 3.5 && $raw_price > 450 => self::getDelivery($weight, Deliveries::Shopfans),
+            $weight == 15 && $raw_price > 450 => self::getDelivery($weight, Deliveries::Shopfans),
+            default => self::getDelivery($weight, Deliveries::Onex),
         };
     }
 
-    public static function priceRound(int $price, int $subcount): int
+    public static function priceRound(int $price, int $subcount = 50): int
     {
         return $subcount * floor($price / $subcount); //в меньшую сторону
     }
