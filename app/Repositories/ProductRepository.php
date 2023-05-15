@@ -64,7 +64,7 @@ class ProductRepository
 
     public function insertBackMarketUrl($insert)
     {
-        DB::select(DB::raw("INSERT INTO wp_postmeta (post_id, meta_key, meta_value) VALUES $insert;"));
+        DB::select(DB::raw("REPLACE INTO wp_postmeta (post_id, meta_key, meta_value) VALUES $insert AS new ON DUPLICATE KEY UPDATE meta_key = new.meta_key AND meta_value = new.meta_value;"));
     }
 
     public function getCourseByName($name): int
