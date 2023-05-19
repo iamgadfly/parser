@@ -13,4 +13,5 @@ class PostMeta extends Model
     protected $table = 'wp_postmeta';
     public $timestamps = false;
 
+    protected $fillable = ['post_id', 'meta_key', 'meta_value', 'meta_id'];
 }
