@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\PostMeta;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository
@@ -17,7 +18,7 @@ class ProductRepository
     {
         //       $mysqli = new \mysqli(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
         //$mysqli = new \mysqli('localhost', 'fagosejz_cdek', '123QwertY!', 'fagosejz_cdek');
-			$sql = "SELECT post_id, t.name AS product_category, IF(p.post_parent = 0, p.ID, p.post_parent) AS post_parent, (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_regular_price' LIMIT 1) AS 'regular_price', (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_price' LIMIT 1) AS 'price',  (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_stock_status' LIMIT 1) AS 'stock status',  IFNULL((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = 'backmarket_id' LIMIT 1), (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = 'backmarket_id' LIMIT 1)) as backmarket_id, IFNULL((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = 'attribute_pa_sostoyanie' LIMIT 1), (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = 'attribute_pa_sostoyanie' LIMIT 1)) as state, IFNULL(SUBSTR( (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_product_attributes' LIMIT 1), INSTR((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_product_attributes' LIMIT 1), 'is_variation')+16,1),1) AS 'variation'  FROM `wp_postmeta` AS pm JOIN wp_posts AS p ON p.ID = pm.post_id JOIN wp_term_relationships AS tr ON tr.object_id = IF(p.post_parent = 0, p.ID, p.post_parent) JOIN wp_term_taxonomy AS tt ON tt.taxonomy = 'product_cat' AND tt.term_taxonomy_id = tr.term_taxonomy_id  JOIN wp_terms AS t ON t.term_id = tt.term_id  WHERE meta_key in ('_product_version') AND p.post_status in ('publish') AND IFNULL(SUBSTR((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_product_attributes' LIMIT 1), INSTR((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_product_attributes' LIMIT 1), 'is_variation')+16,1),0)=0;";
+        $sql = "SELECT post_id, t.name AS product_category, IF(p.post_parent = 0, p.ID, p.post_parent) AS post_parent, (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_regular_price' LIMIT 1) AS 'regular_price', (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_price' LIMIT 1) AS 'price',  (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_stock_status' LIMIT 1) AS 'stock status',  IFNULL((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = 'backmarket_id' LIMIT 1), (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = 'backmarket_id' LIMIT 1)) as backmarket_id, IFNULL((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = 'attribute_pa_sostoyanie' LIMIT 1), (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = 'attribute_pa_sostoyanie' LIMIT 1)) as state, IFNULL(SUBSTR( (SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_product_attributes' LIMIT 1), INSTR((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_product_attributes' LIMIT 1), 'is_variation')+16,1),1) AS 'variation'  FROM `wp_postmeta` AS pm JOIN wp_posts AS p ON p.ID = pm.post_id JOIN wp_term_relationships AS tr ON tr.object_id = IF(p.post_parent = 0, p.ID, p.post_parent) JOIN wp_term_taxonomy AS tt ON tt.taxonomy = 'product_cat' AND tt.term_taxonomy_id = tr.term_taxonomy_id  JOIN wp_terms AS t ON t.term_id = tt.term_id  WHERE meta_key in ('_product_version') AND p.post_status in ('publish') AND IFNULL(SUBSTR((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_product_attributes' LIMIT 1), INSTR((SELECT meta_value FROM wp_postmeta WHERE post_id = pm.post_id AND meta_key = '_product_attributes' LIMIT 1), 'is_variation')+16,1),0)=0;";
         $raw_data = DB::select(DB::raw($sql));
         //    $raw_data = $mysqli->query($sql)->fetch_all(MYSQLI_ASSOC);
         return $raw_data;
@@ -80,5 +81,42 @@ class ProductRepository
         }
         $product['post_id'] = $post_id;
         return $product;
+    }
+
+    public function createRebagPostMeta($variation, $product, $create_data): void
+    {
+        PostMeta::updateOrCreate(
+            [
+                'post_id'    => $variation->id,
+                'meta_key'   => 'rebag_id',
+                'meta_value' => $product->variants[0]->id,
+            ],
+            [
+                'meta_key'   => 'rebag_id',
+                'meta_value' => $product->variants[0]->id,
+            ]);
+
+        PostMeta::updateOrCreate(
+            [
+                'post_id'    => $variation->id,
+                'meta_key'   => 'attribute_pa_sostoyanie',
+                'meta_value' => $create_data['state'],
+            ],
+            [
+                'meta_key'   => 'attribute_pa_sostoyanie',
+                'meta_value' => $create_data['state'],
+            ]);
+
+        PostMeta::updateOrCreate(
+            [
+                'post_id'    => $variation->id,
+                'meta_key'   => '_sale_price',
+                'meta_value' => $create_data['regular_price'],
+            ],
+            [
+                'meta_key'   => '_sale_price',
+                'meta_value' => $create_data['regular_price'],
+            ]);
+
     }
 }
