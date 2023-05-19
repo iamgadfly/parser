@@ -20,7 +20,6 @@ class RebagService
     public function index($req_data)
     {
         dd(json_decode($this->getApiRebag()));
-        dd($req_data);
     }
 
     public function getApiRebag()
@@ -40,18 +39,16 @@ class RebagService
 						"&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Bottega%20Veneta&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500", 
 				];
 				foreach ($links as $key => $link){
-						//$i  = match(true){
-				//		key($link) == 0 => 1, 
-				//		key($link) == 1 => 1, 
-				//		key($link) == 2 => 1, 
-				//		key($link) == 3 => 1, 
-				//		key($link) == 4 => 1, 
-				//		};
-
 				$check = Http::get("https://api.rebag.com/api/v6/shop/product/?collection_scope=0&page=" . $i . $link);
 				$parsed = json_decode($check);
             if (!empty($parsed->products)) {
                 foreach ($parsed->products as $key => $product) {
+				$check_product = DB::table('wp_posts')->where('post_title', $product->title)->first();
+						if(!empty($check_product)){
+								dd($check_product);
+								continue;
+						}
+
                     $raw_data_state = explode('Condition:', $product->body_html);
                     // $raw_data_desc = explode('Accessories:', $product->body_html);
                     $raw_sizes = explode(',', str_replace('"', '', stristr(trim(explode('Measurements:', $product->body_html)[1]), 'Designer', true)));
@@ -103,7 +100,8 @@ class RebagService
 				]
 			],
 		    ]);
-		    PostMeta::updateOrCreate(
+			  DB::transaction(function() use ($variation, $product, $create_data) {
+				  PostMeta::updateOrCreate(
 			    [
 				    'post_id' => $variation->id, 
 				    'meta_key' => 'rebag_id', 
@@ -136,17 +134,27 @@ class RebagService
                                     'meta_key' => '_sale_price', 
                                     'meta_value' => $create_data['regular_price'], 
 			    ]);
+			  }
 
+		    dd($variation);
 
-		    //dd($variation);
-
-           }
+           });
 			} else {
 				$i = 1;
 			}
            $i++;
 				}
         } while (!empty($parsed->products));
+
+		  DB::transaction(function()  {
+				  DB::select(DB::raw("
+						DELETE t1 FROM wp_postmeta t1 
+						INNER JOIN wp_postmeta t2  
+						WHERE  t1.meta_id < t2.meta_id 
+						AND  t1.meta_key = t2.meta_key 
+						AND t1.post_id=t2.post_id;")
+				 );
+		  });
     }
 
     public function createVariationWP($product_id, $data)
