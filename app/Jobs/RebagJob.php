@@ -2,18 +2,20 @@
 
 namespace App\Jobs;
 
+use App\Repositories\ProductRepository;
+use App\Services\RebagService;
+use App\Services\TranslateService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Services\RebagService;
 
 class RebagJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $rebagService;
     /**
      * Create a new job instance.
      *
@@ -21,7 +23,7 @@ class RebagJob implements ShouldQueue
      */
     public function __construct()
     {
-        //
+        $this->rebagService = new RebagService(new TranslateService(), new ProductRepository());
     }
 
     /**
@@ -31,7 +33,6 @@ class RebagJob implements ShouldQueue
      */
     public function handle()
     {
-
-
+        $this->rebagService->getApiRebag();
     }
 }

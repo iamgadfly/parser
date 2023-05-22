@@ -73,9 +73,9 @@ class RebagService
                         ];
 
                         $wp_product = $this->createProductWP($create_data);
-						if(is_null($wp_product){
-						continue;
-						}
+                        if (is_null($wp_product)) {
+                            continue;
+                        }
                         $variation = $this->createVariationWP($wp_product->id, [
                             'regular_price' => $create_data['regular_price'],
                             '_sale_pice'    => $create_data['regular_price'],

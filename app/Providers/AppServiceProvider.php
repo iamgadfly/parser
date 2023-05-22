@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Actions\PriceDeliveryAction;
+use App\Jobs\RebagJob;
 use App\Repositories\DeliveryRepository;
 use App\Repositories\ProductRepository;
 use App\Services\ParserService;
@@ -42,6 +43,11 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(YandexService::class, function () {
             return new YandexService();
+        });
+
+        $this->app->bind(RebagJob::class, function () {
+            // return new YandexService();
+            return new RebagJob();
         });
     }
 
