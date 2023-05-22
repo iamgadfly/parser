@@ -43,7 +43,7 @@ class RebagService
                     foreach ($parsed->products as $key => $product) {
                         $check_product = DB::table('wp_posts')->where('post_title', $product->title)->first();
                         if (!empty($check_product)) {
-                            // dd($check_product);
+                            //dd($check_product);
                             continue;
                         }
 
@@ -73,6 +73,9 @@ class RebagService
                         ];
 
                         $wp_product = $this->createProductWP($create_data);
+						if(is_null($wp_product){
+						continue;
+						}
                         $variation = $this->createVariationWP($wp_product->id, [
                             'regular_price' => $create_data['regular_price'],
                             '_sale_pice'    => $create_data['regular_price'],
