@@ -33,6 +33,7 @@ class RebagJob implements ShouldQueue
      */
     public function handle()
     {
+		logger('test_rebag', ['start']);
         $this->rebagService->getApiRebag();
     }
 }

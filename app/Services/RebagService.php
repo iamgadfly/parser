@@ -73,8 +73,10 @@ class RebagService
                         ];
 
                         $wp_product = $this->createProductWP($create_data);
+						logger('test_wp_prodcut', [$wp_product]);
                         if (is_null($wp_product)) {
-                            continue;
+								logger('test_wp_error', [false]);
+								continue;
                         }
                         $variation = $this->createVariationWP($wp_product->id, [
                             'regular_price' => $create_data['regular_price'],
@@ -90,8 +92,6 @@ class RebagService
                         DB::transaction(function () use ($variation, $product, $create_data) {
                             $this->productRepository->createRebagPostMeta($variation, $product, $create_data);
                         });
-
-                        dd($variation);
                     }
 
                 } else {
@@ -109,7 +109,7 @@ class RebagService
 						AND  t1.meta_key = t2.meta_key
 						AND t1.post_id=t2.post_id;")
         );
-        //   });
+		logger('test_rebag_sucsess', [true]);
     }
 
     public function createVariationWP($product_id, $data)

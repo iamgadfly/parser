@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new ParserJob)->hourly();
+        //$schedule->job(new ParserJob)->hourly();
         $schedule->job(new RebagJob)->everyMinute();
         //->everyMinute();
         //->hourly();
