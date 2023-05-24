@@ -117,7 +117,7 @@ class RebagService
         $curl = curl_init();
         curl_setopt_array($curl, array(
             // /wp-jsvariationon/wc/v3/products/$product_id/variations
-            CURLOPT_URL            => env('WP_URL') . "/wp-json/wc/v3/products/$product_id/variations?consumer_key=ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70&consumer_secret=cs_90575e933df47298b06da8156007da72b120e7d8",
+            CURLOPT_URL            => env('WP_URL') . "/wp-json/wc/v3/products/$product_id/variations?consumer_key=" . env('WP_KEY') . "&consumer_secret=" . env('WP_SECRET'),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING       => '',
             CURLOPT_MAXREDIRS      => 10,
@@ -142,7 +142,7 @@ class RebagService
         $curl = curl_init();
         curl_setopt_array($curl, array(
 //CURLOPT_URL => env('WP_URL') . '/wp-json/wc/v3/products?consumer_key=ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70&consumer_secret=cs_90575e933df47298b06da8156007da72b120e7d8',
-            CURLOPT_URL            => env('WP_URL') . '/wp-json/wc/v3/products?consumer_key=ck_ed0bd9742aa86ec2583160e7420f1f485cb4ea70&consumer_secret=cs_90575e933df47298b06da8156007da72b120e7d8',
+            CURLOPT_URL            => env('WP_URL') . '/wp-json/wc/v3/products?consumer_key=' . env('WP_KEY') . '&consumer_secret=' . env('WP_SECRET'),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING       => '',
             CURLOPT_MAXREDIRS      => 10,
