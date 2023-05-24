@@ -31,9 +31,9 @@ class RebagService
         do {
             $links = [
                 "&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Louis%20Vuitton&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500",
-                "&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Chanel&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500",
-                "&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Chloe&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500",
-                "&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Balenciaga&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500",
+              "&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Chanel&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500",
+             "&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Chloe&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500",
+           "&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Balenciaga&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500",
                 "&pf_t_first_look_hidden%5B%5D=bc-filter-General%20View&pf_v_designers%5B%5D=Bottega%20Veneta&sort=created-descending&sort_first=available&pf_t_price%5B%5D=bc-filter-%24500%20to%20%241%E2%80%9A500&pf_t_price%5B%5D=bc-filter-%24100%20to%20%24500",
             ];
             foreach ($links as $key => $link) {
@@ -60,16 +60,21 @@ class RebagService
                         }
 
                         $create_data = $this->getProductData($raw_data_state, $product, $dollar_course, $sizes, $materials);
-                        $create_data = array_replace($create_data, $this->translateService->translate([$create_data['color'], array_values($create_data['materials'])]));
+			$translate_data = $this->translateService->translate([$create_data['color'], array_values($create_data['materials'])]) ?? null;
+			if(!is_null($translate_data)){
+                        	$create_data = array_replace($create_data, $translate_data);
+			}
                         // $create_data = array_replace($create_data, $translate_data);
+
 
                         foreach ($create_data['images'] as $image) {
                             $images[]['src'] = $image;
                         }
-                        $create_data['images'] = $images;
+			$create_data['images'] = [];
+				//$images; убрали картинки
                         $create_data['categories'] = [
                             ['id' => $wp_categories['sumki']],
-                            ['id' => $create_data['brand'] == 'Louis Vuitton' ? $wp_categories['louis-vuitton'] : $wp_categories[mb_strtolower($create_data['brand'])]],
+                            ['id' => $create_data['brand'] == 'Louis Vuitton' ? $wp_categories['louis-vuitton'] : $wp_categories[mb_strtolower($create_data['brand'])] ?? $wp_categories['bottega']],
                         ];
 
                         $wp_product = $this->createProductWP($create_data);

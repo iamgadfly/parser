@@ -20,12 +20,17 @@ class TranslateService
         curl_setopt($curl, CURLOPT_POST, true);
         $result = curl_exec($curl);
         curl_close($curl);
-		$result = collect(json_decode($result)->translations);
+	$data = json_decode($result)->translations ?? null;
+	if(!is_null($data)){
+		$result = collect($data);
 		$result_data = $result->pluck('text');
 		return [
 						//'name' => $result_data->pull(0),
 						'color' => $result_data->pull(0),
 						'materials' => $result_data->all(),
 		];	
+	} else {
+		return null;
+	}
     }
 }
